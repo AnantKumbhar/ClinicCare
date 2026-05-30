@@ -1,0 +1,85 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>ClinicCare</title>
+
+    <link rel="stylesheet"
+          href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+</head>
+
+<body>
+
+    <nav class="navbar navbar-dark bg-primary">
+        <div class="container-fluid">
+
+            <span class="navbar-brand">
+                ClinicCare
+            </span>
+
+            <div>
+                Welcome, @User.Identity?.Name
+
+                <a asp-controller="Account"
+                       asp-action="Logout"
+                       class="btn btn-danger btn-sm ms-3">
+                    Logout
+                </a>
+            </div>
+
+        </div>
+    </nav>
+
+    <div class="container-fluid">
+
+        <div class="row">
+
+            <div class="col-md-2 bg-light min-vh-100">
+
+                <ul class="nav flex-column mt-3">
+
+                    <li class="nav-item">
+                        <a class="nav-link"
+                               asp-controller="Admin"
+                               asp-action="Dashboard">
+                            Dashboard
+                        </a>
+                    </li>
+
+                    <li class="nav-item">
+                        <a class="nav-link">
+                            Patients
+                        </a>
+                    </li>
+
+                    <li class="nav-item">
+                        <a class="nav-link">
+                            Medicines
+                        </a>
+                    </li>
+
+                    @if (User.IsInRole("Admin"))
+                    {
+                        <li class="nav-item">
+                            <a class="nav-link">
+                                Expenses
+                            </a>
+                        </li>
+                    }
+
+                </ul>
+
+            </div>
+
+            <div class="col-md-10 p-4">
+
+                @RenderBody()
+
+            </div>
+
+        </div>
+
+    </div>
+
+</body>
+</html>

@@ -45,6 +45,13 @@
                             Dashboard
                         </a>
                     </li>
+                    <li class="nav-item">
+                        <a class="nav-link"
+                               asp-controller="PatientEntry"
+                               asp-action="Create">
+                            Patient Entry
+                        </a>
+                    </li>
 
                     <li class="nav-item">
                         <a class="nav-link">
@@ -80,6 +87,11 @@
         </div>
 
     </div>
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
+    <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
+
+    @await RenderSectionAsync("Scripts", required: false)
 
 </body>
 </html>

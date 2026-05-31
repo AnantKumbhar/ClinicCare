@@ -1,0 +1,204 @@
+﻿@model ClinicCare.ViewModels.PatientEntryViewModel
+
+@{
+    Layout = "_DashboardLayout";
+}
+@if (TempData["Success"] != null)
+{
+    <div class="alert alert-success">
+        @TempData["Success"]
+    </div>
+}
+<h2>Patient Entry</h2>
+
+<form method="post">
+
+    <div class="row">
+
+        <div class="col-md-4">
+            <label>Patient ID</label>
+            <input asp-for="PatientCode"
+                   id="patientSearch"
+                   autocomplete="off"
+                   class="form-control" />
+
+            <div id="patientSuggestions"
+                 class="list-group">
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <label>Full Name</label>
+            <input asp-for="FullName" id="fullName" class="form-control" />
+        </div>
+
+        <div class="col-md-4">
+            <label>Date Of Birth</label>
+            <input asp-for="DateOfBirth"
+                   id="dateOfBirth"
+                   type="date"
+                   class="form-control" />
+        </div>
+
+    </div>
+
+    <br />
+
+    <div class="row">
+
+        <div class="col-md-4">
+            <label>Gender</label>
+            <select asp-for="Gender" id="gender" class="form-control">
+                <option value="">Select</option>
+                <option>Male</option>
+                <option>Female</option>
+            </select>
+        </div>
+
+        <div class="col-md-4">
+            <label>Mobile Number</label>
+            <input asp-for="MobileNumber" id="mobileNumber"
+                   class="form-control" />
+        </div>
+
+    </div>
+
+    <br />
+
+    <div class="row">
+
+        <div class="col-md-4">
+            <label>Disease</label>
+            <input asp-for="Disease"
+                   class="form-control" />
+        </div>
+
+        <div class="col-md-4">
+            <label>Amount</label>
+            <input asp-for="AmountPaid"
+                   class="form-control" />
+        </div>
+
+    </div>
+
+    <br />
+
+    <div>
+        <label>Notes</label>
+        <textarea asp-for="Notes"
+                      class="form-control">
+        </textarea>
+        </div>
+
+        <br />
+
+        <button class="btn btn-primary">
+            Save Entry
+        </button>
+
+    </form>
+
+    @section Scripts
+    {
+        <script>
+
+            $("#patientSearch").keyup(function () {
+
+                let term = $(this).val();
+
+                if (term.length < 1)
+                {
+                    $("#patientSuggestions").empty();
+                    return;
+                }
+
+                $.get('/PatientEntry/SearchPatients',
+                    { term: term },
+                    function (data)
+                    {
+                        let html = '';
+
+                        data.forEach(function(patient)
+                        {
+                            html += `
+                                <a href="#"
+                                   class="list-group-item patient-item"
+                                   data-id="${patient.patientCode}">
+                                   ${patient.patientCode}
+                                   -
+                                   ${patient.fullName}
+                                   -
+                                   ${patient.mobileNumber}
+                                </a>
+                            `;
+                        });
+
+                        $("#patientSuggestions").html(html);
+                    });
+            });
+
+            $(document).on('click',
+                '.patient-item',
+                function(e)
+                {
+                    e.preventDefault();
+
+                    let patientCode =
+                        $(this).data('id');
+
+                    $.get('/PatientEntry/GetPatientDetails',
+                        { patientCode: patientCode },
+                        function(patient)
+                        {
+                            $("#patientSearch")
+                                .val(patient.patientCode);
+
+                            $("#fullName")
+                                .val(patient.fullName);
+
+                            $("#dateOfBirth")
+                                .val(patient.dateOfBirth.substring(0,10));
+
+                            $("#gender")
+                                .val(patient.gender);
+
+                            $("#mobileNumber")
+                                .val(patient.mobileNumber);
+                            
+                            $("#fullName").prop("readonly", true);
+
+                            $("#dateOfBirth").prop("readonly", true);
+
+                            $("#mobileNumber").prop("readonly", true);
+
+                            $("#gender").prop("disabled", true);
+
+                            $("#patientSuggestions")
+                                .empty();
+                        });
+                });
+
+                        $("#patientSearch").on("input", function () {
+
+                if ($(this).val().trim() === "")
+                {
+                    $("#fullName").prop("readonly", false);
+
+                    $("#dateOfBirth").prop("readonly", false);
+
+                    $("#mobileNumber").prop("readonly", false);
+
+                    $("#gender").prop("disabled", false);
+
+                    $("#fullName").val("");
+
+                    $("#dateOfBirth").val("");
+
+                    $("#mobileNumber").val("");
+
+                    $("#gender").val("");
+                }
+            });
+
+        </script>
+    }

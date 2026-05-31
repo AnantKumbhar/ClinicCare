@@ -1,0 +1,69 @@
+﻿@model List<ClinicCare.ViewModels.TodayEntriesViewModel>
+
+@{
+    Layout = "_DashboardLayout";
+}
+
+<h2>Today's Entries</h2>
+
+<div class="row mb-3">
+
+    <div class="col-md-3">
+        <div class="card">
+            <div class="card-body">
+                <h6>Total Patients</h6>
+                <h3>@ViewBag.TotalPatients</h3>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-3">
+        <div class="card">
+            <div class="card-body">
+                <h6>Total Collection</h6>
+                <h3>₹ @ViewBag.TotalCollection</h3>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<table class="table table-bordered table-striped">
+
+    <thead>
+        <tr>
+            <th>Visit No</th>
+            <th>Patient ID</th>
+            <th>Patient Name</th>
+            <th>Disease</th>
+            <th>Amount</th>
+            <th>Time</th>
+        </tr>
+    </thead>
+
+    <tbody>
+
+        @foreach (var item in Model)
+        {
+            <tr>
+
+                <td>@item.VisitNumber</td>
+
+                <td>@item.PatientCode</td>
+
+                <td>@item.PatientName</td>
+
+                <td>@item.Disease</td>
+
+                <td>₹ @item.AmountPaid</td>
+
+                <td>
+                    @item.VisitDate.ToString("hh:mm tt")
+                </td>
+
+            </tr>
+        }
+
+    </tbody>
+
+</table>

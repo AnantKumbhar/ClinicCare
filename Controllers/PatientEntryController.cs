@@ -110,6 +110,29 @@ namespace ClinicCare.Controllers
 
             return Json(patient);
         }
+        public IActionResult Today()
+        {
+            var today = DateTime.Today;
 
+            var entries = _context.PatientVisits
+                .Where(v => v.VisitDate.Date == today)
+                .Select(v => new TodayEntriesViewModel
+                {
+                    VisitNumber = v.VisitNumber,
+                    PatientCode = v.Patient.PatientCode,
+                    PatientName = v.Patient.FullName,
+                    Disease = v.Disease,
+                    AmountPaid = v.AmountPaid,
+                    VisitDate = v.VisitDate
+                })
+                .ToList();
+
+            ViewBag.TotalPatients = entries.Count;
+
+            ViewBag.TotalCollection =
+                entries.Sum(x => x.AmountPaid);
+
+            return View(entries);
+        }
     }
 }

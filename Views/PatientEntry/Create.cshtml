@@ -39,6 +39,16 @@
                    type="date"
                    class="form-control" />
         </div>
+        <div class="col-md-2">
+
+            <label>Age</label>
+
+            <div class="form-control bg-light"
+                 id="ageDisplay">
+                -
+            </div>
+
+        </div>
 
     </div>
 
@@ -102,7 +112,7 @@
     {
         <script>
 
-            $("#patientSearch").keyup(function () {
+            $("#patientSearch").on("input", function () {
 
                 let term = $(this).val();
 
@@ -159,6 +169,10 @@
                             $("#dateOfBirth")
                                 .val(patient.dateOfBirth.substring(0,10));
 
+                            $("#ageDisplay").text("-");
+
+                            calculateAge(patient.dateOfBirth);
+
                             $("#gender")
                                 .val(patient.gender);
 
@@ -199,6 +213,28 @@
                     $("#gender").val("");
                 }
             });
+            function calculateAge(dateOfBirth)
+            {
+                let dob = new Date(dateOfBirth);
 
+                let today = new Date();
+
+                let age = today.getFullYear()
+                    - dob.getFullYear();
+
+                let month =
+                    today.getMonth() - dob.getMonth();
+
+                if (
+                    month < 0 ||
+                    (month === 0 &&
+                    today.getDate() < dob.getDate())
+                )
+                {
+                    age--;
+                }
+
+                $("#ageDisplay").text(age + " Years");
+            }
         </script>
     }

@@ -81,7 +81,16 @@
                             </a>
                         </li>
                     }
-
+                    @if (User.IsInRole("Admin"))
+                    {
+                        <li class="nav-item">
+                            <a class="nav-link"
+                                   asp-controller="Medicine"
+                                   asp-action="Index">
+                                Medicines
+                            </a>
+                        </li>
+                    }
                     @if (User.IsInRole("Admin"))
                     {
                         <li class="nav-item">

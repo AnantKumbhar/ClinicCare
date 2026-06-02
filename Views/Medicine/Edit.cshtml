@@ -1,0 +1,64 @@
+﻿@model ClinicCare.ViewModels.MedicineViewModel
+
+@{
+    Layout = "_DashboardLayout";
+}
+
+<h2>Edit Medicine</h2>
+
+<form method="post">
+
+    <input asp-for="Id" type="hidden" />
+
+    <div class="mb-3">
+        <label>Medicine Name</label>
+        <input asp-for="MedicineName"
+               class="form-control" />
+    </div>
+
+    <div class="mb-3">
+        <label>Category</label>
+
+        <select asp-for="MedicineCategoryId"
+                asp-items="Model.Categories"
+                class="form-control">
+
+            <option value="">
+                Select Category
+            </option>
+
+        </select>
+    </div>
+
+    <div class="mb-3">
+        <label>Stock Quantity</label>
+
+        <input asp-for="StockQuantity"
+               class="form-control" />
+    </div>
+
+    <div class="mb-3">
+        <label>Expiry Date</label>
+
+        <input asp-for="ExpiryDate"
+               type="date"
+               class="form-control" />
+    </div>
+
+    <div class="mb-3">
+        <label>Purchase Price</label>
+
+        <input asp-for="PurchasePrice"
+               class="form-control" />
+    </div>
+
+    <button class="btn btn-primary">
+        Update
+    </button>
+
+    <a asp-action="Index"
+           class="btn btn-secondary">
+        Cancel
+    </a>
+
+</form>

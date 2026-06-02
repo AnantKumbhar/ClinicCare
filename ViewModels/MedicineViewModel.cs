@@ -1,8 +1,9 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Microsoft.AspNetCore.Mvc.Rendering;
+using System.ComponentModel.DataAnnotations;
 
-namespace ClinicCare.Models
+namespace ClinicCare.ViewModels
 {
-    public class Medicine
+    public class MedicineViewModel
     {
         public int Id { get; set; }
 
@@ -21,9 +22,7 @@ namespace ClinicCare.Models
         [Required]
         public decimal PurchasePrice { get; set; }
 
-        public DateTime CreatedDate { get; set; }
-            = DateTime.Now;
-
-        public MedicineCategory? MedicineCategory { get; set; }
+        public List<SelectListItem> Categories { get; set; }
+            = new();
     }
 }

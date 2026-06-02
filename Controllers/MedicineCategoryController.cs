@@ -87,6 +87,17 @@ namespace ClinicCare.Controllers
                 return NotFound();
             }
 
+            var hasMedicines = _context.Medicines
+    .Any(m => m.MedicineCategoryId == id);
+
+            if (hasMedicines)
+            {
+                TempData["Error"] =
+                    "Cannot delete category because medicines exist.";
+
+                return RedirectToAction(nameof(Index));
+            }
+
             _context.MedicineCategories.Remove(category);
 
             _context.SaveChanges();

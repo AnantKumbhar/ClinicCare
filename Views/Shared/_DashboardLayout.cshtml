@@ -75,6 +75,16 @@
                     {
                         <li class="nav-item">
                             <a class="nav-link"
+                                   asp-controller="DiseaseCategory"
+                                   asp-action="Index">
+                                Disease Categories
+                            </a>
+                        </li>
+                    }
+                    @if (User.IsInRole("Admin"))
+                    {
+                        <li class="nav-item">
+                            <a class="nav-link"
                                    asp-controller="MedicineCategory"
                                    asp-action="Index">
                                 Medicine Categories

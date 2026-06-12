@@ -15,6 +15,7 @@ namespace ClinicCare.Data
         public DbSet<PatientVisit> PatientVisits { get; set; }
         public DbSet<MedicineCategory> MedicineCategories { get; set; }
         public DbSet<Medicine> Medicines { get; set; }
+        public DbSet<DiseaseCategory> DiseaseCategories { get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);

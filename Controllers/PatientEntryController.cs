@@ -3,6 +3,7 @@ using ClinicCare.Models;
 using ClinicCare.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace ClinicCare.Controllers
 {
@@ -12,7 +13,27 @@ namespace ClinicCare.Controllers
         [HttpGet]
         public IActionResult Create()
         {
-            return View();
+            var model = new PatientEntryViewModel();
+
+            model.DiseaseCategories =
+                _context.DiseaseCategories
+                .Select(d => new SelectListItem
+                {
+                    Value = d.Id.ToString(),
+                    Text = d.Name
+                })
+                .ToList();
+
+            model.MedicineOptions = _context.Medicines
+    .OrderBy(x => x.MedicineName)
+    .Select(m => new SelectListItem
+    {
+        Value = m.Id.ToString(),
+        Text = m.MedicineName
+    })
+    .ToList();
+
+            return View(model);
         }
         private readonly ApplicationDbContext _context;
         private string GeneratePatientCode()
@@ -36,6 +57,24 @@ namespace ClinicCare.Controllers
         {
             if (!ModelState.IsValid)
             {
+                model.DiseaseCategories =
+        _context.DiseaseCategories
+        .Select(d => new SelectListItem
+        {
+            Value = d.Id.ToString(),
+            Text = d.Name
+        })
+        .ToList();
+
+                model.MedicineOptions =
+                    _context.Medicines
+                    .Select(m => new SelectListItem
+                    {
+                        Value = m.Id.ToString(),
+                        Text = m.MedicineName
+                    })
+                    .ToList();
+
                 return View(model);
             }
 
@@ -62,12 +101,46 @@ namespace ClinicCare.Controllers
                 VisitNumber = GenerateVisitNumber(),
                 PatientId = patient.Id,
                 VisitDate = DateTime.Now,
-                Disease = model.Disease,
+                DiseaseCategoryId = model.DiseaseCategoryId,
                 AmountPaid = model.AmountPaid,
                 Notes = model.Notes
             };
 
             _context.PatientVisits.Add(visit);
+            _context.SaveChanges();
+
+            foreach (var item in model.Medicines)
+            {
+                var medicine = _context.Medicines
+                    .FirstOrDefault(m => m.Id == item.MedicineId);
+
+                if (medicine == null)
+                {
+                    continue;
+                }
+
+                if (item.Quantity > medicine.StockQuantity)
+                {
+                    TempData["Error"] =
+                        $"{medicine.MedicineName} does not have enough stock.";
+
+                    return RedirectToAction(nameof(Create));
+                }
+
+                medicine.StockQuantity -= item.Quantity;
+
+                var visitMedicine =
+                    new PatientVisitMedicine
+                    {
+                        PatientVisitId = visit.Id,
+                        MedicineId = item.MedicineId,
+                        Quantity = item.Quantity
+                    };
+
+                _context.PatientVisitMedicines
+                    .Add(visitMedicine);
+            }
+
             _context.SaveChanges();
 
             TempData["Success"] = "Patient Entry Saved Successfully";
@@ -121,7 +194,7 @@ namespace ClinicCare.Controllers
                     VisitNumber = v.VisitNumber,
                     PatientCode = v.Patient.PatientCode,
                     PatientName = v.Patient.FullName,
-                    Disease = v.Disease,
+                    Disease = v.DiseaseCategory.Name,
                     AmountPaid = v.AmountPaid,
                     VisitDate = v.VisitDate
                 })

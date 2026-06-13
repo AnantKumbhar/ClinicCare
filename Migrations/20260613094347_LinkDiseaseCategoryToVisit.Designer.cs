@@ -4,6 +4,7 @@ using ClinicCare.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ClinicCare.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20260613094347_LinkDiseaseCategoryToVisit")]
+    partial class LinkDiseaseCategoryToVisit
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -197,32 +200,6 @@ namespace ClinicCare.Migrations
                     b.ToTable("Patients");
                 });
 
-            modelBuilder.Entity("PatientVisitMedicine", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<int>("MedicineId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("PatientVisitId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("Quantity")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("MedicineId");
-
-                    b.HasIndex("PatientVisitId");
-
-                    b.ToTable("PatientVisitMedicines");
-                });
-
             modelBuilder.Entity("ClinicCare.Models.Medicine", b =>
                 {
                     b.HasOne("ClinicCare.Models.MedicineCategory", "MedicineCategory")
@@ -251,25 +228,6 @@ namespace ClinicCare.Migrations
                     b.Navigation("DiseaseCategory");
 
                     b.Navigation("Patient");
-                });
-
-            modelBuilder.Entity("PatientVisitMedicine", b =>
-                {
-                    b.HasOne("ClinicCare.Models.Medicine", "Medicine")
-                        .WithMany()
-                        .HasForeignKey("MedicineId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("ClinicCare.Models.PatientVisit", "PatientVisit")
-                        .WithMany()
-                        .HasForeignKey("PatientVisitId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Medicine");
-
-                    b.Navigation("PatientVisit");
                 });
 
             modelBuilder.Entity("ClinicCare.Models.MedicineCategory", b =>

@@ -9,6 +9,12 @@
         @TempData["Success"]
     </div>
 }
+@if (TempData["Error"] != null)
+{
+    <div class="alert alert-danger">
+        @TempData["Error"]
+    </div>
+}
 <h2>Patient Entry</h2>
 
 <form method="post">
@@ -78,9 +84,19 @@
     <div class="row">
 
         <div class="col-md-4">
-            <label>Disease</label>
-            <input asp-for="Disease"
-                   class="form-control" />
+
+            <label>Disease Category</label>
+
+            <select asp-for="DiseaseCategoryId"
+                    asp-items="Model.DiseaseCategories"
+                    class="form-control">
+
+                <option value="">
+                    Select Disease
+                </option>
+
+            </select>
+
         </div>
 
         <div class="col-md-4">
@@ -92,6 +108,87 @@
     </div>
 
     <br />
+    <hr />
+
+    <h4>Medicines</h4>
+
+    <div class="row">
+
+        <div class="col-md-5">
+
+            <label>Medicine</label>
+
+            <select id="medicineDropdown"
+                    class="form-control">
+
+                <option value="">
+                    Select Medicine
+                </option>
+
+                @foreach (var medicine in Model.MedicineOptions)
+                {
+                    <option value="@medicine.Value">
+                        @medicine.Text
+                    </option>
+                }
+
+            </select>
+
+        </div>
+
+        <div class="col-md-3">
+
+            <label>Quantity</label>
+
+            <input type="number"
+                   id="medicineQty"
+                   min="1"
+                   class="form-control" />
+
+        </div>
+
+        <div class="col-md-2">
+
+            <label>&nbsp;</label>
+
+            <button type="button"
+                    id="addMedicineBtn"
+                    class="btn btn-success form-control">
+
+                Add
+
+            </button>
+
+        </div>
+
+    </div>
+
+    <br />
+
+    <table class="table table-bordered"
+           id="medicineTable">
+
+        <thead>
+
+            <tr>
+
+                <th>Medicine</th>
+
+                <th>Quantity</th>
+
+                <th>Action</th>
+
+            </tr>
+
+        </thead>
+
+        <tbody>
+        </tbody>
+
+    </table>
+
+    <div id="hiddenMedicineInputs">
+    </div>
 
     <div>
         <label>Notes</label>
@@ -185,7 +282,7 @@
 
                             $("#mobileNumber").prop("readonly", true);
 
-                            $("#gender").prop("disabled", true);
+                            $("#gender").css("pointer-events", "none");
 
                             $("#patientSuggestions")
                                 .empty();
@@ -236,5 +333,82 @@
 
                 $("#ageDisplay").text(age + " Years");
             }
+                        let medicineIndex = 0;
+
+            $("#addMedicineBtn").click(function ()
+            {
+                let medicineId =
+                    $("#medicineDropdown").val();
+
+                let medicineName =
+                    $("#medicineDropdown option:selected").text();
+
+                let quantity =
+                    $("#medicineQty").val();
+
+                if (!medicineId || quantity <= 0)
+                {
+                    alert("Select medicine and quantity");
+
+                    return;
+                }
+
+                let row = `
+                    <tr id="row-${medicineIndex}">
+
+                        <td>${medicineName}</td>
+
+                        <td>${quantity}</td>
+
+                        <td>
+
+                            <button type="button"
+                                    class="btn btn-danger btn-sm removeMedicine"
+                                    data-row="${medicineIndex}">
+                                Remove
+                            </button>
+
+                        </td>
+
+                    </tr>
+                `;
+
+                $("#medicineTable tbody")
+                    .append(row);
+
+                let hiddenInputs = `
+                <div id="hidden-${medicineIndex}">
+                    <input type="hidden"
+                           name="Medicines[${medicineIndex}].MedicineId"
+                           value="${medicineId}" />
+
+                    <input type="hidden"
+                           name="Medicines[${medicineIndex}].Quantity"
+                           value="${quantity}" />
+                </div>
+                `;
+
+                $("#hiddenMedicineInputs")
+                    .append(hiddenInputs);
+
+                medicineIndex++;
+
+                $("#medicineDropdown").val("");
+
+                $("#medicineQty").val("");
+            });
+
+            $(document).on("click",
+                ".removeMedicine",
+                function ()
+                {
+                    let rowId =
+                        $(this).data("row");
+
+                    $("#row-" + rowId)
+                        .remove();
+                    $("#hidden-" + rowId)
+                        .remove();
+                });
         </script>
     }

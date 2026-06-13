@@ -10,11 +10,12 @@
 
         public DateTime VisitDate { get; set; }
 
-        public string Disease { get; set; } = string.Empty;
+        public int DiseaseCategoryId { get; set; }
 
         public decimal AmountPaid { get; set; }
 
         public string Notes { get; set; } = string.Empty;
+        public DiseaseCategory? DiseaseCategory { get; set; }
 
         public Patient? Patient { get; set; }
     }

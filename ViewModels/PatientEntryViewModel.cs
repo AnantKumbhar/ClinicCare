@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Microsoft.AspNetCore.Mvc.Rendering;
+using System.ComponentModel.DataAnnotations;
 
 namespace ClinicCare.ViewModels
 {
@@ -6,24 +7,29 @@ namespace ClinicCare.ViewModels
     {
         public string? PatientCode { get; set; }
 
-        [Required]
+        
         public string FullName { get; set; } = string.Empty;
 
         [Required]
         public DateTime DateOfBirth { get; set; }
 
-        [Required]
+        
         public string Gender { get; set; } = string.Empty;
 
-        [Required]
+       
         public string MobileNumber { get; set; } = string.Empty;
 
         [Required]
-        public string Disease { get; set; } = string.Empty;
+        public int DiseaseCategoryId { get; set; }
 
         [Required]
         public decimal AmountPaid { get; set; }
 
         public string Notes { get; set; } = string.Empty;
+        public List<SelectListItem> DiseaseCategories { get; set; } = new();
+
+        public List<PatientVisitMedicineViewModel> Medicines { get; set; } = new();
+
+        public List<SelectListItem> MedicineOptions { get; set; } = new();
     }
 }

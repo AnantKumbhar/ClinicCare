@@ -20,6 +20,9 @@
 <form method="post">
 
     <div class="row">
+        <div asp-validation-summary="All"
+             class="text-danger">
+        </div>
 
         <div class="col-md-4">
             <label>Patient ID</label>
@@ -37,6 +40,8 @@
             <label>Full Name</label>
             <input asp-for="FullName" id="fullName" class="form-control" />
         </div>
+        <span asp-validation-for="FullName"
+              class="text-danger"></span>
 
         <div class="col-md-4">
             <label>Date Of Birth</label>
@@ -45,6 +50,8 @@
                    type="date"
                    class="form-control" />
         </div>
+        <span asp-validation-for="DateOfBirth"
+              class="text-danger"></span>
         <div class="col-md-2">
 
             <label>Age</label>
@@ -70,12 +77,16 @@
                 <option>Female</option>
             </select>
         </div>
+        <span asp-validation-for="Gender"
+              class="text-danger"></span>
 
         <div class="col-md-4">
             <label>Mobile Number</label>
             <input asp-for="MobileNumber" id="mobileNumber"
                    class="form-control" />
         </div>
+        <span asp-validation-for="MobileNumber"
+              class="text-danger"></span>
 
     </div>
 
@@ -96,6 +107,8 @@
                 </option>
 
             </select>
+            <span asp-validation-for="DiseaseCategoryId"
+                  class="text-danger"></span>
 
         </div>
 
@@ -104,6 +117,8 @@
             <input asp-for="AmountPaid"
                    class="form-control" />
         </div>
+        <span asp-validation-for="AmountPaid"
+              class="text-danger"></span>
 
     </div>
 

@@ -78,6 +78,24 @@ namespace ClinicCare.Controllers
                 return View(model);
             }
 
+            foreach (var item in model.Medicines)
+            {
+                var medicine = _context.Medicines
+                    .FirstOrDefault(m => m.Id == item.MedicineId);
+
+                if (medicine == null)
+                {
+                    continue;
+                }
+
+                if (item.Quantity > medicine.StockQuantity)
+                {
+                    TempData["Error"] =
+                        $"Insufficient stock for {medicine.MedicineName}. Available: {medicine.StockQuantity}";
+
+                    return RedirectToAction(nameof(Create));
+                }
+            }
             var patient = _context.Patients
     .FirstOrDefault(p => p.PatientCode == model.PatientCode);
 
@@ -119,13 +137,7 @@ namespace ClinicCare.Controllers
                     continue;
                 }
 
-                if (item.Quantity > medicine.StockQuantity)
-                {
-                    TempData["Error"] =
-                        $"{medicine.MedicineName} does not have enough stock.";
-
-                    return RedirectToAction(nameof(Create));
-                }
+                
 
                 medicine.StockQuantity -= item.Quantity;
 

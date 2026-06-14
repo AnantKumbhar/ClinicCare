@@ -7,7 +7,7 @@ namespace ClinicCare.ViewModels
     {
         public string? PatientCode { get; set; }
 
-        
+        [Required(ErrorMessage = "Full Name is required")]
         public string FullName { get; set; } = string.Empty;
 
         [Required]
@@ -16,13 +16,14 @@ namespace ClinicCare.ViewModels
         
         public string Gender { get; set; } = string.Empty;
 
-       
+        [Required(ErrorMessage = "Mobile Number is required")]
         public string MobileNumber { get; set; } = string.Empty;
 
-        [Required]
+        [Required(ErrorMessage = "Disease Category is required")]
         public int DiseaseCategoryId { get; set; }
 
-        [Required]
+        [Required(ErrorMessage = "Amount is required")]
+        [Range(1, 100000)]
         public decimal AmountPaid { get; set; }
 
         public string Notes { get; set; } = string.Empty;

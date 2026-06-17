@@ -1,0 +1,60 @@
+﻿@model List<ClinicCare.ViewModels.MedicinePurchaseHistoryViewModel>
+
+@{
+    Layout = "_DashboardLayout";
+}
+
+<h2>Medicine Purchase History</h2>
+
+<table class="table table-bordered">
+
+    <thead>
+
+        <tr>
+
+            <th>Date</th>
+
+            <th>Medicine</th>
+
+            <th>Quantity</th>
+
+            <th>Amount</th>
+
+            <th>Invoice</th>
+
+        </tr>
+
+    </thead>
+
+    <tbody>
+
+        @foreach (var item in Model)
+        {
+            <tr>
+
+                <td>
+                    @item.PurchaseDate.ToString("dd-MMM-yyyy")
+                </td>
+
+                <td>
+                    @item.MedicineName
+                </td>
+
+                <td>
+                    @item.QuantityPurchased
+                </td>
+
+                <td>
+                    ₹ @item.PurchaseAmount
+                </td>
+
+                <td>
+                    @item.InvoiceNumber
+                </td>
+
+            </tr>
+        }
+
+    </tbody>
+
+</table>

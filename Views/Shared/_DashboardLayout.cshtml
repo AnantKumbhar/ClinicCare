@@ -116,6 +116,15 @@
                             </a>
                         </li>
                     }
+                    <li class="nav-item">
+                        <a class="nav-link"
+                           asp-controller="MedicinePurchase"
+                           asp-action="History">
+
+                        Medicine Purchase History
+
+                    </a>
+                    </li>
                     @if (User.IsInRole("Admin"))
                     {
                         <li class="nav-item">

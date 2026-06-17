@@ -85,5 +85,32 @@ namespace ClinicCare.Controllers
 
             return RedirectToAction(nameof(Create));
         }
+        public IActionResult History()
+        {
+            var purchases = _context.MedicinePurchases
+                .OrderByDescending(x => x.PurchaseDate)
+                .Select(x => new MedicinePurchaseHistoryViewModel
+                {
+                    Id = x.Id,
+
+                    MedicineName =
+                        x.Medicine.MedicineName,
+
+                    QuantityPurchased =
+                        x.QuantityPurchased,
+
+                    PurchaseAmount =
+                        x.PurchaseAmount,
+
+                    InvoiceNumber =
+                        x.InvoiceNumber,
+
+                    PurchaseDate =
+                        x.PurchaseDate
+                })
+                .ToList();
+
+            return View(purchases);
+        }
     }
 }

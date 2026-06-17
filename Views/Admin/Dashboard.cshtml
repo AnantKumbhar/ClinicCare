@@ -1,25 +1,75 @@
-﻿@{
+﻿@model ClinicCare.ViewModels.DashboardViewModel
+
+@{
     Layout = "_DashboardLayout";
 }
+
+<h2>Doctor Dashboard</h2>
 
 <div class="row">
 
     <div class="col-md-3">
-        <div class="card">
+
+        <div class="card text-center">
+
             <div class="card-body">
+
                 <h5>Today's Patients</h5>
-                <h3>0</h3>
+
+                <h2>@Model.TodayPatients</h2>
+
             </div>
+
         </div>
+
     </div>
 
     <div class="col-md-3">
-        <div class="card">
+
+        <div class="card text-center">
+
             <div class="card-body">
-                <h5>Today's Income</h5>
-                <h3>₹0</h3>
+
+                <h5>Today's Collection</h5>
+
+                <h2>₹ @Model.TodayCollection</h2>
+
             </div>
+
         </div>
+
+    </div>
+
+    <div class="col-md-3">
+
+        <div class="card text-center">
+
+            <div class="card-body">
+
+                <h5>Total Patients</h5>
+
+                <h2>@Model.TotalPatients</h2>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <div class="col-md-3">
+
+        <div class="card text-center">
+
+            <div class="card-body">
+
+                <h5>Total Visits</h5>
+
+                <h2>@Model.TotalVisits</h2>
+
+            </div>
+
+        </div>
+
     </div>
 
 </div>

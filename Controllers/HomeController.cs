@@ -10,7 +10,23 @@ namespace ClinicCare.Controllers
     {
         public IActionResult Index()
         {
-            return View();
+            if (User.IsInRole("Admin"))
+            {
+                return RedirectToAction(
+                    "Dashboard",
+                    "Admin");
+            }
+
+            if (User.IsInRole("Compounder"))
+            {
+                return RedirectToAction(
+                    "Dashboard",
+                    "Compounder");
+            }
+
+            return RedirectToAction(
+                "Login",
+                "Account");
         }
 
         public IActionResult Privacy()

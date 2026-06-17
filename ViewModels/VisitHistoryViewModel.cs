@@ -6,6 +6,8 @@
 
         public long VisitNumber { get; set; }
 
+        public int PatientId { get; set; }
+
         public string PatientCode { get; set; }
 
         public string PatientName { get; set; }

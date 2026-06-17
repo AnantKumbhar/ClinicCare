@@ -40,7 +40,16 @@
 
                 <td>@item.PatientCode</td>
 
-                <td>@item.PatientName</td>
+                <td>
+
+                    <a asp-action="PatientProfile"
+                           asp-route-id="@item.PatientId">
+
+                        @item.PatientName
+
+                    </a>
+
+                </td>
 
                 <td>@item.Disease</td>
 

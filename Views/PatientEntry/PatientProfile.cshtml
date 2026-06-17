@@ -1,0 +1,115 @@
+﻿@model ClinicCare.ViewModels.PatientProfileViewModel
+
+@{
+    Layout = "_DashboardLayout";
+}
+
+<h2>Patient Profile</h2>
+
+<div class="card">
+
+    <div class="card-body">
+
+        <p>
+            <strong>Patient Code:</strong>
+            @Model.PatientCode
+        </p>
+
+        <p>
+            <strong>Name:</strong>
+            @Model.FullName
+        </p>
+
+        <p>
+            <strong>Gender:</strong>
+            @Model.Gender
+        </p>
+
+        <p>
+            <strong>Mobile:</strong>
+            @Model.MobileNumber
+        </p>
+
+        <p>
+            <strong>Date Of Birth:</strong>
+            @Model.DateOfBirth.ToString("dd-MMM-yyyy")
+        </p>
+
+        <p>
+            <strong>Total Visits:</strong>
+            @Model.TotalVisits
+        </p>
+
+        <p>
+            <strong>Last Visit:</strong>
+            @Model.LastVisitDate?.ToString("dd-MMM-yyyy")
+        </p>
+
+    </div>
+
+</div>
+
+<br />
+
+<h4>Visit History</h4>
+
+<table class="table table-bordered">
+
+    <thead>
+
+        <tr>
+
+            <th>Visit No</th>
+
+            <th>Disease</th>
+
+            <th>Amount</th>
+
+            <th>Date</th>
+
+            <th>Action</th>
+
+        </tr>
+
+    </thead>
+
+    <tbody>
+
+        @foreach (var visit in Model.Visits)
+        {
+            <tr>
+
+                <td>@visit.VisitNumber</td>
+
+                <td>@visit.Disease</td>
+
+                <td>₹ @visit.AmountPaid</td>
+
+                <td>
+                    @visit.VisitDate.ToString("dd-MMM-yyyy")
+                </td>
+
+                <td>
+
+                    <a asp-action="VisitDetails"
+                           asp-route-id="@visit.VisitId"
+                           class="btn btn-info btn-sm">
+
+                        View
+
+                    </a>
+
+                </td>
+
+            </tr>
+        }
+
+    </tbody>
+
+</table>
+<a asp-action="VisitHistory"
+       class="btn btn-secondary">
+
+    Back
+
+</a>

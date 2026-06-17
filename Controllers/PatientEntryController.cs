@@ -228,6 +228,7 @@ namespace ClinicCare.Controllers
                 {
                     VisitId = v.Id,
                     VisitNumber = v.VisitNumber,
+                    PatientId = v.PatientId,
                     PatientCode = v.Patient.PatientCode,
                     PatientName = v.Patient.FullName,
                     Disease = v.DiseaseCategory.Name,
@@ -275,6 +276,49 @@ namespace ClinicCare.Controllers
                         Quantity = x.Quantity
                     })
                     .ToList()
+            };
+
+            return View(model);
+        }
+        public IActionResult PatientProfile(int id)
+        {
+            var patient = _context.Patients
+                .FirstOrDefault(p => p.Id == id);
+
+            if (patient == null)
+            {
+                return NotFound();
+            }
+
+            var visits = _context.PatientVisits
+                .Where(v => v.PatientId == patient.Id)
+                .OrderByDescending(v => v.VisitDate)
+                .Select(v => new VisitHistoryViewModel
+                {
+                    VisitId = v.Id,
+                    VisitNumber = v.VisitNumber,
+                    PatientCode = patient.PatientCode,
+                    PatientName = patient.FullName,
+                    Disease = v.DiseaseCategory.Name,
+                    AmountPaid = v.AmountPaid,
+                    VisitDate = v.VisitDate
+                })
+                .ToList();
+
+            var model = new PatientProfileViewModel
+            {
+                PatientCode = patient.PatientCode,
+                FullName = patient.FullName,
+                Gender = patient.Gender,
+                MobileNumber = patient.MobileNumber,
+                DateOfBirth = patient.DateOfBirth,
+
+                TotalVisits = visits.Count,
+
+                LastVisitDate = visits
+                    .FirstOrDefault()?.VisitDate,
+
+                Visits = visits
             };
 
             return View(model);

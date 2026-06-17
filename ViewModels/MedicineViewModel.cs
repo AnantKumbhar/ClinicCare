@@ -13,7 +13,6 @@ namespace ClinicCare.ViewModels
         [Required]
         public int MedicineCategoryId { get; set; }
 
-        [Required]
         public int StockQuantity { get; set; }
 
         [Required]

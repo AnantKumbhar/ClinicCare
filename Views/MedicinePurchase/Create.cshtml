@@ -1,0 +1,114 @@
+﻿@model ClinicCare.ViewModels.MedicinePurchaseViewModel
+
+@{
+    Layout = "_DashboardLayout";
+}
+
+@if (TempData["Success"] != null)
+{
+    <div class="alert alert-success">
+        @TempData["Success"]
+    </div>
+}
+
+<h2>Medicine Purchase Entry</h2>
+
+<form method="post">
+
+    <div class="row">
+
+        <div class="col-md-6">
+
+            <label>Medicine</label>
+
+            <select asp-for="MedicineId"
+                    asp-items="Model.Medicines"
+                    class="form-control">
+
+                <option value="">
+                    Select Medicine
+                </option>
+
+            </select>
+
+            <span asp-validation-for="MedicineId"
+                  class="text-danger">
+            </span>
+
+        </div>
+
+        <div class="col-md-6">
+
+            <label>Quantity Purchased</label>
+
+            <input asp-for="QuantityPurchased"
+                   class="form-control" />
+
+            <span asp-validation-for="QuantityPurchased"
+                  class="text-danger">
+            </span>
+
+        </div>
+
+    </div>
+
+    <br />
+
+    <div class="row">
+
+        <div class="col-md-6">
+
+            <label>Purchase Amount</label>
+
+            <input asp-for="PurchaseAmount"
+                   class="form-control" />
+
+            <span asp-validation-for="PurchaseAmount"
+                  class="text-danger">
+            </span>
+
+        </div>
+
+        <div class="col-md-6">
+
+            <label>Invoice Number</label>
+
+            <input asp-for="InvoiceNumber"
+                   class="form-control" />
+
+        </div>
+
+    </div>
+
+    <br />
+
+    <div class="row">
+
+        <div class="col-md-12">
+
+            <label>Notes</label>
+
+            <textarea asp-for="Notes"
+                      class="form-control"
+                          rows="3">
+            </textarea>
+
+            </div>
+
+        </div>
+
+        <br />
+
+        <button type="submit"
+                class="btn btn-success">
+
+            Save Purchase
+
+        </button>
+
+    </form>
+
+    @section Scripts
+    {
+        <partial name="_ValidationScriptsPartial" />
+    }

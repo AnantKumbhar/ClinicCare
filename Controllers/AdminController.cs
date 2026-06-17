@@ -30,7 +30,22 @@ namespace ClinicCare.Controllers
 
                 TotalPatients = _context.Patients.Count(),
 
-                TotalVisits = _context.PatientVisits.Count()
+                TotalVisits = _context.PatientVisits.Count(),
+
+                LowStockMedicines = _context.Medicines
+                    .Where(m => m.StockQuantity <= 10)
+                    .OrderBy(m => m.StockQuantity)
+                    .Take(10)
+                    .ToList(),
+
+                ExpiringMedicines = _context.Medicines
+    .Where(m =>
+        m.ExpiryDate <= DateTime.Today.AddDays(30))
+    .OrderBy(m => m.ExpiryDate)
+    .Take(10)
+    .ToList()
+
+
             };
 
             return View(model);

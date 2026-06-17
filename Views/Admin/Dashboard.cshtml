@@ -72,4 +72,106 @@
 
     </div>
 
+
+</div>
+<br />
+
+<div class="card">
+
+    <div class="card-header">
+
+        <h5>Low Stock Medicines</h5>
+
+    </div>
+
+    <div class="card-body">
+
+        <table class="table table-bordered">
+
+            <thead>
+
+                <tr>
+
+                    <th>Medicine</th>
+
+                    <th>Stock</th>
+
+                </tr>
+
+            </thead>
+
+            <tbody>
+
+                @foreach (var medicine in Model.LowStockMedicines)
+                {
+                    <tr>
+
+                        <td>
+                            @medicine.MedicineName
+                        </td>
+
+                        <td>
+                            @medicine.StockQuantity
+                        </td>
+
+                    </tr>
+                }
+
+            </tbody>
+
+        </table>
+
+    </div>
+
+</div>
+
+<br />
+
+<div class="card">
+
+    <div class="card-header">
+
+        <h5>Expiring Medicines (Next 30 Days)</h5>
+
+    </div>
+
+    <div class="card-body">
+
+        <table class="table table-bordered">
+
+            <thead>
+
+                <tr>
+
+                    <th>Medicine</th>
+
+                    <th>Expiry Date</th>
+
+                </tr>
+
+            </thead>
+
+            <tbody>
+
+                @foreach (var medicine in Model.ExpiringMedicines)
+                {
+                    <tr>
+
+                        <td>
+                            @medicine.MedicineName
+                        </td>
+
+                        <td>
+                            @medicine.ExpiryDate.ToString("dd-MMM-yyyy")
+                        </td>
+
+                    </tr>
+                }
+
+            </tbody>
+
+        </table>
+
+    </div>
+
 </div>

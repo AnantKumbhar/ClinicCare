@@ -16,6 +16,7 @@ namespace ClinicCare.Data
         public DbSet<MedicineCategory> MedicineCategories { get; set; }
         public DbSet<Medicine> Medicines { get; set; }
         public DbSet<DiseaseCategory> DiseaseCategories { get; set; }
+        public DbSet<MedicinePurchase> MedicinePurchases { get; set; }
 
         public DbSet<PatientVisitMedicine> PatientVisitMedicines { get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -29,6 +30,10 @@ namespace ClinicCare.Data
             modelBuilder.Entity<Medicine>()
     .Property(m => m.PurchasePrice)
     .HasPrecision(10, 2);
+
+            modelBuilder.Entity<MedicinePurchase>()
+    .Property(x => x.PurchaseAmount)
+    .HasPrecision(18, 2);
         }
     }
 }

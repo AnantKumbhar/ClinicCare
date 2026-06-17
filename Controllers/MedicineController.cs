@@ -70,7 +70,7 @@ namespace ClinicCare.Controllers
             {
                 MedicineName = model.MedicineName,
                 MedicineCategoryId = model.MedicineCategoryId,
-                StockQuantity = model.StockQuantity,
+                StockQuantity = 0,
                 ExpiryDate = model.ExpiryDate,
                 PurchasePrice = model.PurchasePrice
             };

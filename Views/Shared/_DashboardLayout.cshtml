@@ -138,7 +138,9 @@
                     @if (User.IsInRole("Admin"))
                     {
                         <li class="nav-item">
-                            <a class="nav-link">
+                            <a class="nav-link" 
+                                    asp-controller="Expense"
+                                   asp-action="Index">
                                 Expenses
                             </a>
                         </li>

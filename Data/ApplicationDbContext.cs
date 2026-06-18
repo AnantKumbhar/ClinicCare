@@ -19,6 +19,10 @@ namespace ClinicCare.Data
         public DbSet<MedicinePurchase> MedicinePurchases { get; set; }
 
         public DbSet<PatientVisitMedicine> PatientVisitMedicines { get; set; }
+
+        public DbSet<ExpenseCategory> ExpenseCategories { get; set; }
+
+        public DbSet<Expense> Expenses { get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
@@ -33,6 +37,10 @@ namespace ClinicCare.Data
 
             modelBuilder.Entity<MedicinePurchase>()
     .Property(x => x.PurchaseAmount)
+    .HasPrecision(18, 2);
+
+            modelBuilder.Entity<Expense>()
+    .Property(x => x.Amount)
     .HasPrecision(18, 2);
         }
     }

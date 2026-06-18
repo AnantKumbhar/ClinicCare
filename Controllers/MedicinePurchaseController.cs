@@ -109,6 +109,10 @@ namespace ClinicCare.Controllers
                         x.PurchaseDate
                 })
                 .ToList();
+            
+                    ViewBag.TotalPurchases = purchases.Count;
+
+                    ViewBag.TotalAmount = purchases.Sum(x => x.PurchaseAmount);
 
             return View(purchases);
         }

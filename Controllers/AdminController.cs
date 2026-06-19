@@ -32,6 +32,52 @@ namespace ClinicCare.Controllers
 
                 TotalVisits = _context.PatientVisits.Count(),
 
+                TotalRevenue = _context.PatientVisits
+    .Sum(x => (decimal?)x.AmountPaid) ?? 0,
+
+                TotalExpense = _context.Expenses
+    .Sum(x => (decimal?)x.Amount) ?? 0,
+
+                TotalProfit =
+(
+    _context.PatientVisits
+        .Sum(x => (decimal?)x.AmountPaid) ?? 0
+)
+-
+(
+    _context.Expenses
+        .Sum(x => (decimal?)x.Amount) ?? 0
+),
+
+                MonthRevenue = _context.PatientVisits
+    .Where(x =>
+        x.VisitDate.Month == today.Month &&
+        x.VisitDate.Year == today.Year)
+    .Sum(x => (decimal?)x.AmountPaid) ?? 0,
+
+                MonthExpense = _context.Expenses
+    .Where(x =>
+        x.ExpenseDate.Month == today.Month &&
+        x.ExpenseDate.Year == today.Year)
+    .Sum(x => (decimal?)x.Amount) ?? 0,
+
+                MonthProfit =
+(
+    _context.PatientVisits
+        .Where(x =>
+            x.VisitDate.Month == today.Month &&
+            x.VisitDate.Year == today.Year)
+        .Sum(x => (decimal?)x.AmountPaid) ?? 0
+)
+-
+(
+    _context.Expenses
+        .Where(x =>
+            x.ExpenseDate.Month == today.Month &&
+            x.ExpenseDate.Year == today.Year)
+        .Sum(x => (decimal?)x.Amount) ?? 0
+),
+
                 LowStockMedicines = _context.Medicines
                     .Where(m => m.StockQuantity <= 10)
                     .OrderBy(m => m.StockQuantity)

@@ -78,6 +78,25 @@ namespace ClinicCare.Controllers
             _context.MedicinePurchases
                 .Add(purchase);
 
+            var expenseCategory = _context.ExpenseCategories
+                .FirstOrDefault(x => x.Name == "Medicine Purchase");
+
+            if (expenseCategory != null)
+            {
+                var expense = new Expense
+                {
+                    ExpenseCategoryId = expenseCategory.Id,
+
+                    Amount = model.PurchaseAmount,
+
+                    ExpenseDate = DateTime.Now,
+
+                    Notes = $"Medicine Purchase - {medicine.MedicineName}"
+                };
+
+                _context.Expenses.Add(expense);
+            }
+
             _context.SaveChanges();
 
             TempData["Success"] =

@@ -12,10 +12,22 @@ namespace ClinicCare.ViewModels
 
         public int TotalVisits { get; set; }
 
+        public decimal TotalRevenue { get; set; }
+
+        public decimal TotalExpense { get; set; }
+
+        public decimal TotalProfit { get; set; }
+
+        public decimal MonthRevenue { get; set; }
+
+        public decimal MonthExpense { get; set; }
+
+        public decimal MonthProfit { get; set; }
+
         public List<Medicine> LowStockMedicines { get; set; }
-    = new();
+            = new();
 
         public List<Medicine> ExpiringMedicines { get; set; }
-    = new();
+            = new();
     }
 }

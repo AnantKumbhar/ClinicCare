@@ -198,5 +198,73 @@ namespace ClinicCare.Controllers
 
             return RedirectToAction(nameof(Index));
         }
+        [HttpGet]
+        public IActionResult Report(
+    DateTime? fromDate,
+    DateTime? toDate,
+    int? expenseCategoryId)
+        {
+            var query = _context.Expenses.AsQueryable();
+
+            if (fromDate.HasValue)
+            {
+                query = query.Where(x =>
+                    x.ExpenseDate.Date >= fromDate.Value.Date);
+            }
+
+            if (toDate.HasValue)
+            {
+                query = query.Where(x =>
+                    x.ExpenseDate.Date <= toDate.Value.Date);
+            }
+
+            if (expenseCategoryId.HasValue)
+            {
+                query = query.Where(x =>
+                    x.ExpenseCategoryId ==
+                    expenseCategoryId.Value);
+            }
+
+            var model = new ExpenseReportViewModel
+            {
+                FromDate = fromDate,
+
+                ToDate = toDate,
+
+                ExpenseCategoryId = expenseCategoryId,
+
+                Categories = _context.ExpenseCategories
+                    .Select(x => new SelectListItem
+                    {
+                        Value = x.Id.ToString(),
+                        Text = x.Name
+                    })
+                    .ToList(),
+
+                Expenses = query
+                    .OrderByDescending(x => x.ExpenseDate)
+                    .Select(x =>
+                        new ExpenseReportItemViewModel
+                        {
+                            ExpenseDate = x.ExpenseDate,
+
+                            CategoryName =
+                                x.ExpenseCategory.Name,
+
+                            Amount = x.Amount,
+
+                            Notes = x.Notes
+                        })
+                    .ToList()
+            };
+
+            ViewBag.TotalAmount =
+                model.Expenses.Sum(x => x.Amount);
+
+            ViewBag.TotalRecords =
+                model.Expenses.Count;
+
+            return View(model);
+        }
     }
 }

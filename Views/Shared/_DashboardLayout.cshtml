@@ -145,6 +145,15 @@
                             </a>
                         </li>
                     }
+                    @if (User.IsInRole("Admin"))
+                    {
+                        <li>
+                            <a asp-controller="Expense"
+                               asp-action="Report">
+                                Expense Report
+                            </a>
+                        </li>
+                    }
 
                 </ul>
 

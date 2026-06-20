@@ -147,10 +147,21 @@
                     }
                     @if (User.IsInRole("Admin"))
                     {
-                        <li>
-                            <a asp-controller="Expense"
+                        <li class="nav-item">
+                            <a class="nav-link"
+                                asp-controller="Expense"
                                asp-action="Report">
                                 Expense Report
+                            </a>
+                        </li>
+                    }
+                    @if (User.IsInRole("Compounder"))
+                    {
+                        <li class="nav-item">
+                            <a class="nav-link"
+                                asp-controller="Compounder"
+                               asp-action="Appointments">
+                                Appointments
                             </a>
                         </li>
                     }

@@ -12,7 +12,7 @@ namespace ClinicCare.Controllers
     public class PatientEntryController : Controller
     {
         [HttpGet]
-        public IActionResult Create()
+        public IActionResult Create(string? patientCode, int? appointmentId)
         {
             var model = new PatientEntryViewModel();
 
@@ -33,6 +33,31 @@ namespace ClinicCare.Controllers
         Text = m.MedicineName
     })
     .ToList();
+            if (!string.IsNullOrEmpty(patientCode))
+            {
+                var patient = _context.Patients
+                    .FirstOrDefault(x =>
+                        x.PatientCode == patientCode);
+
+                if (patient != null)
+                {
+                    model.PatientCode =
+                        patient.PatientCode;
+
+                    model.FullName =
+                        patient.FullName;
+
+                    model.DateOfBirth =
+                        patient.DateOfBirth;
+
+                    model.Gender =
+                        patient.Gender;
+
+                    model.MobileNumber =
+                        patient.MobileNumber;
+                }
+            }
+            model.AppointmentId = appointmentId;
 
             return View(model);
         }
@@ -153,7 +178,17 @@ namespace ClinicCare.Controllers
                 _context.PatientVisitMedicines
                     .Add(visitMedicine);
             }
+            if (model.AppointmentId.HasValue)
+            {
+                var appointment = _context.Appointments
+                    .FirstOrDefault(x =>
+                        x.Id == model.AppointmentId.Value);
 
+                if (appointment != null)
+                {
+                    appointment.Status = "Completed";
+                }
+            }
             _context.SaveChanges();
 
             TempData["Success"] = "Patient Entry Saved Successfully";

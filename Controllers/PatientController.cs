@@ -1,7 +1,9 @@
 ﻿using ClinicCare.Data;
+using ClinicCare.Models;
 using ClinicCare.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 
 namespace ClinicCare.Controllers
@@ -45,6 +47,14 @@ namespace ClinicCare.Controllers
                 .OrderByDescending(x => x.VisitDate)
                 .Select(x => x.VisitDate)
                 .FirstOrDefault();
+
+            ViewBag.Slots = GetSlots();
+
+            ViewBag.RecentAppointments = _context.Appointments
+                .Where(x => x.PatientId == patientId)
+                .OrderByDescending(x => x.CreatedDate)
+                .Take(5)
+                .ToList();
 
             return View();
         }
@@ -160,6 +170,113 @@ namespace ClinicCare.Controllers
             };
 
             return View(model);
+        }
+        [HttpGet]
+        public IActionResult BookAppointment()
+        {
+            var model = new AppointmentViewModel();
+
+            model.AppointmentDate = DateTime.Today;
+
+            model.Slots = GetSlots();
+
+            return View(model);
+        }
+
+        [HttpPost]
+        public IActionResult BookAppointment(
+            AppointmentViewModel model)
+        {
+            if (!ModelState.IsValid)
+            {
+                model.Slots = GetSlots();
+
+                return View(model);
+            }
+
+            var patientId = Convert.ToInt32(
+                User.FindFirst("PatientId")?.Value);
+
+            var appointment = new Appointment
+            {
+                PatientId = patientId,
+
+                AppointmentDate =
+                    model.AppointmentDate,
+
+                TimeSlot =
+                    model.TimeSlot,
+
+                Status = "Pending"
+            };
+
+            _context.Appointments.Add(appointment);
+
+            _context.SaveChanges();
+
+            TempData["Success"] =
+                "Appointment Booked Successfully";
+
+            return RedirectToAction(nameof(Dashboard));
+        }
+        private List<SelectListItem> GetSlots()
+        {
+            return new List<SelectListItem>
+    {
+        new SelectListItem
+        {
+            Text="09:00 AM - 10:00 AM",
+            Value="09:00 AM - 10:00 AM"
+        },
+
+        new SelectListItem
+        {
+            Text="10:00 AM - 11:00 AM",
+            Value="10:00 AM - 11:00 AM"
+        },
+
+        new SelectListItem
+        {
+            Text="11:00 AM - 12:00 PM",
+            Value="11:00 AM - 12:00 PM"
+        },
+
+        new SelectListItem
+        {
+            Text="12:00 PM - 01:00 PM",
+            Value="12:00 PM - 01:00 PM"
+        },
+
+        new SelectListItem
+        {
+            Text="02:00 PM - 03:00 PM",
+            Value="02:00 PM - 03:00 PM"
+        },
+
+        new SelectListItem
+        {
+            Text="03:00 PM - 04:00 PM",
+            Value="03:00 PM - 04:00 PM"
+        },
+
+        new SelectListItem
+        {
+            Text="04:00 PM - 05:00 PM",
+            Value="04:00 PM - 05:00 PM"
+        }
+    };
+        }
+        public IActionResult MyAppointments()
+        {
+            var patientId = Convert.ToInt32(
+                User.FindFirst("PatientId")?.Value);
+
+            var appointments = _context.Appointments
+                .Where(x => x.PatientId == patientId)
+                .OrderByDescending(x => x.AppointmentDate)
+                .ToList();
+
+            return View(appointments);
         }
     }
 }

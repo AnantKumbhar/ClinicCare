@@ -5,6 +5,7 @@ namespace ClinicCare.ViewModels
 {
     public class PatientEntryViewModel
     {
+        public int? AppointmentId { get; set; }
         public string? PatientCode { get; set; }
 
         [Required(ErrorMessage = "Full Name is required")]

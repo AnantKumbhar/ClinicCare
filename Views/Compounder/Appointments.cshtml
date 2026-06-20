@@ -1,0 +1,145 @@
+﻿@model List<ClinicCare.ViewModels.AppointmentListViewModel>
+
+@{
+    Layout = "_DashboardLayout";
+}
+
+@if (TempData["Success"] != null)
+{
+    <div class="alert alert-success">
+        @TempData["Success"]
+    </div>
+}
+@if (TempData["Error"] != null)
+{
+    <div class="alert alert-danger">
+        @TempData["Error"]
+    </div>
+}
+
+<h2>Appointments</h2>
+
+<table class="table table-bordered">
+
+    <thead>
+
+        <tr>
+
+            <th>Patient Code</th>
+
+            <th>Patient Name</th>
+
+            <th>Date</th>
+
+            <th>Slot</th>
+
+            <th>Status</th>
+
+            <th>Action</th>
+
+        </tr>
+
+    </thead>
+
+    <tbody>
+
+        @foreach (var item in Model)
+        {
+            <tr>
+
+                <td>@item.PatientCode</td>
+
+                <td>@item.PatientName</td>
+
+                <td>
+                    @item.AppointmentDate.ToString("dd-MMM-yyyy")
+                </td>
+
+                <td>@item.TimeSlot</td>
+
+                <td>
+
+                    @if (item.Status == "Pending")
+                    {
+                        <span class="badge bg-warning">
+                            Pending
+                        </span>
+                    }
+                    else if (item.Status == "Approved")
+                    {
+                        <span class="badge bg-primary">
+                            Approved
+                        </span>
+                    }
+                    else if (item.Status == "Completed")
+                    {
+                        <span class="badge bg-success">
+                            Completed
+                        </span>
+                    }
+                    else
+                    {
+                        <span class="badge bg-danger">
+                            Declined
+                        </span>
+                    }
+
+                </td>
+
+                <td>
+
+                    @if (item.Status == "Pending")
+                    {
+                        <form asp-action="ApproveAppointment"
+                              method="post"
+                              style="display:inline;">
+
+                            <input type="hidden"
+                                   name="id"
+                                   value="@item.Id" />
+
+                            <button class="btn btn-success btn-sm">
+
+                                Approve
+
+                            </button>
+
+                        </form>
+
+                        <form asp-action="DeclineAppointment"
+                              method="post"
+                              style="display:inline;">
+
+                            <input type="hidden"
+                                   name="id"
+                                   value="@item.Id" />
+
+                            <button class="btn btn-danger btn-sm">
+
+                                Decline
+
+                            </button>
+
+                        </form>
+                    }
+                    @if (item.Status == "Approved")
+                    {
+                        <a asp-controller="PatientEntry"
+                           asp-action="Create"
+                           asp-route-patientCode="@item.PatientCode"
+                           asp-route-appointmentId="@item.Id"
+                           class="btn btn-primary btn-sm">
+
+                            Make Patient Entry
+
+                        </a>
+                    }
+
+                </td>
+
+            </tr>
+        }
+
+    </tbody>
+
+</table>

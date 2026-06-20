@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc.Rendering;
+﻿using ClinicCare.Models;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using System.ComponentModel.DataAnnotations;
 
 namespace ClinicCare.ViewModels
@@ -14,4 +15,5 @@ namespace ClinicCare.ViewModels
         public List<SelectListItem> Slots { get; set; }
             = new();
     }
+    
 }

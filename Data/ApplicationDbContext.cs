@@ -23,6 +23,7 @@ namespace ClinicCare.Data
         public DbSet<ExpenseCategory> ExpenseCategories { get; set; }
 
         public DbSet<Expense> Expenses { get; set; }
+        public DbSet<PatientUser> PatientUsers { get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);

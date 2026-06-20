@@ -1,0 +1,80 @@
+﻿@model List<ClinicCare.ViewModels.VisitHistoryViewModel>
+
+@{
+    Layout = "_PatientLayout";
+}
+
+<h2>My Visit History</h2>
+
+<table class="table table-bordered">
+
+    <thead>
+
+        <tr>
+
+            <th>Visit No</th>
+
+            <th>Date</th>
+
+            <th>Disease</th>
+
+            <th>Amount</th>
+
+            <th>Action</th>
+
+        </tr>
+
+    </thead>
+
+    <tbody>
+
+        @if (Model.Any())
+        {
+            foreach (var item in Model)
+            {
+                <tr>
+
+                    <td>@item.VisitNumber</td>
+
+                    <td>
+                        @item.VisitDate.ToString("dd-MMM-yyyy")
+                    </td>
+
+                    <td>@item.Disease</td>
+
+                    <td>
+                        ₹ @item.AmountPaid
+                    </td>
+
+                    <td>
+
+                        <a asp-action="VisitDetails"
+                           asp-route-id="@item.VisitId"
+                           class="btn btn-primary btn-sm">
+
+                            View Details
+
+                        </a>
+
+                    </td>
+
+                </tr>
+            }
+        }
+        else
+        {
+            <tr>
+
+                <td colspan="5"
+                    class="text-center">
+
+                    No Visits Found
+
+                </td>
+
+            </tr>
+        }
+
+    </tbody>
+
+</table>

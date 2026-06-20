@@ -1,0 +1,96 @@
+﻿@model ClinicCare.ViewModels.VisitDetailsViewModel
+
+@{
+    Layout = "_PatientLayout";
+}
+
+<h2>Visit Details</h2>
+
+<div class="card">
+
+    <div class="card-body">
+
+        <p>
+            <strong>Visit No:</strong>
+            @Model.VisitNumber
+        </p>
+
+        <p>
+            <strong>Patient Code:</strong>
+            @Model.PatientCode
+        </p>
+
+        <p>
+            <strong>Patient Name:</strong>
+            @Model.PatientName
+        </p>
+
+        <p>
+            <strong>Disease:</strong>
+            @Model.Disease
+        </p>
+
+        <p>
+            <strong>Amount:</strong>
+            ₹ @Model.AmountPaid
+        </p>
+
+        <p>
+            <strong>Date:</strong>
+            @Model.VisitDate.ToString("dd-MMM-yyyy hh:mm tt")
+        </p>
+
+        <p>
+            <strong>Notes:</strong>
+            @Model.Notes
+        </p>
+
+    </div>
+
+</div>
+
+<br />
+
+<h4>Medicines</h4>
+
+<table class="table table-bordered">
+
+    <thead>
+
+        <tr>
+
+            <th>Medicine</th>
+
+            <th>Quantity</th>
+
+        </tr>
+
+    </thead>
+
+    <tbody>
+
+        @foreach (var medicine in Model.Medicines)
+        {
+            <tr>
+
+                <td>
+                    @medicine.MedicineName
+                </td>
+
+                <td>
+                    @medicine.Quantity
+                </td>
+
+            </tr>
+        }
+
+    </tbody>
+
+</table>
+
+<a asp-action="VisitHistory"
+       class="btn btn-secondary">
+
+    Back
+
+</a>

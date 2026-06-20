@@ -2,6 +2,7 @@
 using ClinicCare.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace ClinicCare.Controllers
 {
@@ -71,6 +72,91 @@ namespace ClinicCare.Controllers
                 Gender = patient.Gender,
 
                 MobileNumber = patient.MobileNumber
+            };
+
+            return View(model);
+        }
+        public IActionResult VisitHistory()
+        {
+            var patientId = Convert.ToInt32(
+                User.FindFirst("PatientId")?.Value);
+
+            var visits = _context.PatientVisits
+                .Where(v => v.PatientId == patientId)
+                .OrderByDescending(v => v.VisitDate)
+                .Select(v => new VisitHistoryViewModel
+                {
+                    VisitId = v.Id,
+
+                    VisitNumber = v.VisitNumber,
+
+                    PatientCode = v.Patient.PatientCode,
+
+                    PatientName = v.Patient.FullName,
+
+                    Disease = v.DiseaseCategory.Name,
+
+                    AmountPaid = v.AmountPaid,
+
+                    VisitDate = v.VisitDate
+                })
+                .ToList();
+
+            return View(visits);
+        }
+        public IActionResult VisitDetails(int id)
+        {
+            var patientId = Convert.ToInt32(
+                User.FindFirst("PatientId")?.Value);
+
+            var visit = _context.PatientVisits
+    .Include(v => v.Patient)
+    .Include(v => v.DiseaseCategory)
+    .FirstOrDefault(v =>
+        v.Id == id &&
+        v.PatientId == patientId);
+
+            if (visit == null)
+            {
+                return NotFound();
+            }
+
+            var model = new VisitDetailsViewModel
+            {
+                VisitNumber = visit.VisitNumber,
+
+                PatientCode =
+                    visit.Patient.PatientCode,
+
+                PatientName =
+                    visit.Patient.FullName,
+
+                Disease =
+                    visit.DiseaseCategory.Name,
+
+                AmountPaid =
+                    visit.AmountPaid,
+
+                VisitDate =
+                    visit.VisitDate,
+
+                Notes =
+                    visit.Notes,
+
+                Medicines =
+                    _context.PatientVisitMedicines
+                    .Where(x =>
+                        x.PatientVisitId == id)
+                    .Select(x =>
+                        new VisitMedicineViewModel
+                        {
+                            MedicineName =
+                                x.Medicine.MedicineName,
+
+                            Quantity =
+                                x.Quantity
+                        })
+                    .ToList()
             };
 
             return View(model);

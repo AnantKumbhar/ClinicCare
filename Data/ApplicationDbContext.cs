@@ -24,6 +24,7 @@ namespace ClinicCare.Data
 
         public DbSet<Expense> Expenses { get; set; }
         public DbSet<PatientUser> PatientUsers { get; set; }
+        public DbSet<Appointment> Appointments { get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);

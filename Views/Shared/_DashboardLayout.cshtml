@@ -37,14 +37,27 @@
             <div class="col-md-2 bg-light min-vh-100">
 
                 <ul class="nav flex-column mt-3">
-
-                    <li class="nav-item">
-                        <a class="nav-link"
+                    @if (User.IsInRole("Admin"))
+                    {
+                        <li class="nav-item">
+                            <a class="nav-link"
                                asp-controller="Admin"
                                asp-action="Dashboard">
-                            Dashboard
-                        </a>
-                    </li>
+                                Dashboard
+                            </a>
+                        </li>
+                    }
+                    @if (User.IsInRole("Compounder"))
+                    {
+                        <li class="nav-item">
+                            <a class="nav-link"
+                               asp-controller="Compounder"
+                               asp-action="Dashboard">
+                                Dashboard
+                            </a>
+                        </li>
+                    }
+                    
                     <li class="nav-item">
                         <a class="nav-link"
                                asp-controller="PatientEntry"
@@ -68,14 +81,6 @@
 
                         </a>
                     </li>
-
-                    <li class="nav-item">
-                        <a class="nav-link">
-                            Patients
-                        </a>
-                    </li>
-
-                    
                     @if (User.IsInRole("Admin"))
                     {
                         <li class="nav-item">
@@ -96,8 +101,7 @@
                             </a>
                         </li>
                     }
-                    @if (User.IsInRole("Admin"))
-                    {
+                    
                         <li class="nav-item">
                             <a class="nav-link"
                                    asp-controller="Medicine"
@@ -105,9 +109,8 @@
                                 Medicines
                             </a>
                         </li>
-                    }
-                    @if (User.IsInRole("Admin"))
-                    {
+                    
+                    
                         <li class="nav-item">
                             <a class="nav-link"
                                    asp-controller="MedicinePurchase"
@@ -115,7 +118,7 @@
                                 Medicines Purchase
                             </a>
                         </li>
-                    }
+                    
                     <li class="nav-item">
                         <a class="nav-link"
                            asp-controller="MedicinePurchase"

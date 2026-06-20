@@ -1,0 +1,60 @@
+﻿@{
+    Layout = "_PatientLayout";
+}
+
+<h2>
+
+    Welcome,
+
+    @ViewBag.PatientName
+
+</h2>
+
+<hr />
+
+<div class="row">
+
+    <div class="col-md-6">
+
+        <div class="card">
+
+            <div class="card-body text-center">
+
+                <h5>Total Visits</h5>
+
+                <h2>
+
+                    @ViewBag.TotalVisits
+
+                </h2>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <div class="col-md-6">
+
+        <div class="card">
+
+            <div class="card-body text-center">
+
+                <h5>Last Visit</h5>
+
+                <h2>
+
+                    @(ViewBag.LastVisit == DateTime.MinValue
+                        ? "No Visits"
+                        : ((DateTime)ViewBag.LastVisit)
+                            .ToString("dd-MMM-yyyy"))
+
+                </h2>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>

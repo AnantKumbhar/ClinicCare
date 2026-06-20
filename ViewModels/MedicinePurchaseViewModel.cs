@@ -5,6 +5,7 @@ namespace ClinicCare.ViewModels
 {
     public class MedicinePurchaseViewModel
     {
+        public int Id { get; set; }
         [Required]
         public int MedicineId { get; set; }
 

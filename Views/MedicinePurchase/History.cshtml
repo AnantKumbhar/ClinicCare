@@ -3,6 +3,18 @@
 @{
     Layout = "_DashboardLayout";
 }
+@if (TempData["Success"] != null)
+{
+    <div class="alert alert-success">
+        @TempData["Success"]
+    </div>
+}
+@if (TempData["Error"] != null)
+{
+    <div class="alert alert-danger">
+        @TempData["Error"]
+    </div>
+}
 
 <div class="alert alert-info">
 
@@ -34,6 +46,8 @@
 
             <th>Invoice</th>
 
+            <th>Action</th>
+
         </tr>
 
     </thead>
@@ -62,6 +76,33 @@
 
                 <td>
                     @item.InvoiceNumber
+                </td>
+
+                <td>
+
+                    <a asp-action="Edit"
+                       asp-route-id="@item.Id"
+                       class="btn btn-warning btn-sm">
+                        Edit
+                    </a>
+
+                    <form asp-action="Delete"
+                          method="post"
+                          style="display:inline;">
+
+                        <input type="hidden"
+                               name="id"
+                               value="@item.Id" />
+
+                        <button class="btn btn-danger btn-sm"
+                                onclick="return confirm('Delete this purchase?')">
+
+                            Delete
+
+                        </button>
+
+                    </form>
+
                 </td>
 
             </tr>

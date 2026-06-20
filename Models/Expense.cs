@@ -13,5 +13,11 @@
         public DateTime ExpenseDate { get; set; }
 
         public string? Notes { get; set; }
+
+        public bool IsSystemGenerated { get; set; }
+
+        public int? MedicinePurchaseId { get; set; }
+
+        public MedicinePurchase? MedicinePurchase { get; set; }
     }
 }

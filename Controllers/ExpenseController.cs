@@ -26,7 +26,8 @@ namespace ClinicCare.Controllers
                     CategoryName = e.ExpenseCategory.Name,
                     e.Amount,
                     e.ExpenseDate,
-                    e.Notes
+                    e.Notes,
+                    e.IsSystemGenerated
                 })
                 .OrderByDescending(x => x.ExpenseDate)
                 .ToList();
@@ -89,7 +90,8 @@ namespace ClinicCare.Controllers
                 ExpenseCategoryId = model.ExpenseCategoryId,
                 Amount = model.Amount,
                 ExpenseDate = model.ExpenseDate,
-                Notes = model.Notes
+                Notes = model.Notes,
+                IsSystemGenerated = false
             };
 
             _context.Expenses.Add(expense);
@@ -111,6 +113,14 @@ namespace ClinicCare.Controllers
             if (expense == null)
             {
                 return NotFound();
+            }
+
+            if (expense.IsSystemGenerated)
+            {
+                TempData["Error"] =
+                    "System generated expenses cannot be edited.";
+
+                return RedirectToAction(nameof(Index));
             }
 
             var model = new ExpenseViewModel
@@ -188,6 +198,13 @@ namespace ClinicCare.Controllers
             {
                 return NotFound();
             }
+            if (expense.IsSystemGenerated)
+{
+    TempData["Error"] =
+        "System generated expenses cannot be deleted.";
+
+    return RedirectToAction(nameof(Index));
+}
 
             _context.Expenses.Remove(expense);
 

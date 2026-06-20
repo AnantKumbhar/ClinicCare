@@ -40,6 +40,15 @@ namespace ClinicCare.Controllers
         {
             if (!ModelState.IsValid)
             {
+                model.Medicines = _context.Medicines
+        .OrderBy(x => x.MedicineName)
+        .Select(x => new SelectListItem
+        {
+            Value = x.Id.ToString(),
+            Text = x.MedicineName
+        })
+        .ToList();
+
                 return View(model);
             }
 
@@ -78,6 +87,8 @@ namespace ClinicCare.Controllers
             _context.MedicinePurchases
                 .Add(purchase);
 
+            _context.SaveChanges();
+
             var expenseCategory = _context.ExpenseCategories
                 .FirstOrDefault(x => x.Name == "Medicine Purchase");
 
@@ -91,7 +102,11 @@ namespace ClinicCare.Controllers
 
                     ExpenseDate = DateTime.Now,
 
-                    Notes = $"Medicine Purchase - {medicine.MedicineName}"
+                    Notes = $"Medicine Purchase - {medicine.MedicineName}",
+
+                    IsSystemGenerated = true,
+
+                    MedicinePurchaseId = purchase.Id
                 };
 
                 _context.Expenses.Add(expense);
@@ -134,6 +149,179 @@ namespace ClinicCare.Controllers
                     ViewBag.TotalAmount = purchases.Sum(x => x.PurchaseAmount);
 
             return View(purchases);
+        }
+        [HttpGet]
+        public IActionResult Edit(int id)
+        {
+            var purchase = _context.MedicinePurchases
+                .FirstOrDefault(x => x.Id == id);
+
+            if (purchase == null)
+            {
+                return NotFound();
+            }
+
+            var model = new MedicinePurchaseViewModel
+            {
+                Id = purchase.Id,
+
+                MedicineId = purchase.MedicineId,
+
+                QuantityPurchased =
+                    purchase.QuantityPurchased,
+
+                PurchaseAmount =
+                    purchase.PurchaseAmount,
+
+                InvoiceNumber =
+                    purchase.InvoiceNumber,
+
+                Notes =
+                    purchase.Notes,
+
+                Medicines = _context.Medicines
+                    .OrderBy(x => x.MedicineName)
+                    .Select(x => new SelectListItem
+                    {
+                        Value = x.Id.ToString(),
+                        Text = x.MedicineName
+                    })
+                    .ToList()
+            };
+
+            return View(model);
+        }
+        [HttpPost]
+        public IActionResult Edit(
+    MedicinePurchaseViewModel model)
+        {
+            if (!ModelState.IsValid)
+            {
+                model.Medicines = _context.Medicines
+                    .OrderBy(x => x.MedicineName)
+                    .Select(x => new SelectListItem
+                    {
+                        Value = x.Id.ToString(),
+                        Text = x.MedicineName
+                    })
+                    .ToList();
+
+                return View(model);
+            }
+
+            var purchase = _context.MedicinePurchases
+                .FirstOrDefault(x => x.Id == model.Id);
+
+            if (purchase == null)
+            {
+                return NotFound();
+            }
+
+            var medicine = _context.Medicines
+                .FirstOrDefault(x =>
+                    x.Id == purchase.MedicineId);
+
+            if (medicine == null)
+            {
+                return NotFound();
+            }
+
+            // Remove old stock
+            medicine.StockQuantity -=
+                purchase.QuantityPurchased;
+
+            // Add new stock
+            medicine.StockQuantity +=
+                model.QuantityPurchased;
+
+            purchase.QuantityPurchased =
+                model.QuantityPurchased;
+
+            purchase.PurchaseAmount =
+                model.PurchaseAmount;
+
+            purchase.InvoiceNumber =
+                model.InvoiceNumber;
+
+            purchase.Notes =
+                model.Notes;
+
+            var expense = _context.Expenses
+                .FirstOrDefault(x =>
+                    x.MedicinePurchaseId ==
+                    purchase.Id);
+
+            if (expense != null)
+            {
+                expense.Amount =
+                    model.PurchaseAmount;
+
+                expense.Notes =
+                    $"Medicine Purchase - {medicine.MedicineName}";
+            }
+
+            _context.SaveChanges();
+
+            TempData["Success"] =
+                "Purchase Updated Successfully";
+
+            return RedirectToAction(nameof(History));
+        }
+        [HttpPost]
+        public IActionResult Delete(int id)
+        {
+            var purchase = _context.MedicinePurchases
+                .FirstOrDefault(x => x.Id == id);
+
+            if (purchase == null)
+            {
+                return NotFound();
+            }
+
+            var medicine = _context.Medicines
+                .FirstOrDefault(x =>
+                    x.Id == purchase.MedicineId);
+
+            if (medicine != null &&
+        medicine.StockQuantity <
+        purchase.QuantityPurchased)
+            {
+                TempData["Error"] =
+                    "Cannot delete purchase because some stock has already been used.";
+
+                return RedirectToAction(nameof(History));
+            }
+
+            if (medicine != null)
+            {
+                medicine.StockQuantity -=
+                    purchase.QuantityPurchased;
+
+                if (medicine.StockQuantity < 0)
+                {
+                    medicine.StockQuantity = 0;
+                }
+            }
+
+            var expense = _context.Expenses
+                .FirstOrDefault(x =>
+                    x.MedicinePurchaseId ==
+                    purchase.Id);
+
+            if (expense != null)
+            {
+                _context.Expenses.Remove(expense);
+            }
+
+            _context.MedicinePurchases
+                .Remove(purchase);
+
+            _context.SaveChanges();
+
+            TempData["Success"] =
+                "Purchase Deleted Successfully";
+
+            return RedirectToAction(nameof(History));
         }
     }
 }

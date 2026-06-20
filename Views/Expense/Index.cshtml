@@ -10,6 +10,13 @@
         @TempData["Success"]
     </div>
 }
+@if (TempData["Error"] != null)
+{
+    <div class="alert alert-danger">
+        @TempData["Error"]
+    </div>
+}
+
 
 <div class="row mb-3">
 
@@ -61,6 +68,7 @@
             <th>Category</th>
             <th>Amount</th>
             <th>Notes</th>
+            <th>Type</th>
             <th>Action</th>
         </tr>
     </thead>
@@ -85,6 +93,11 @@
 
                 <td>
                     @item.Notes
+                </td>
+                <td>
+                    @(item.IsSystemGenerated
+                        ? "Auto"
+                        : "Manual")
                 </td>
 
                 <td>

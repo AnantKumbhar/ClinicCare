@@ -4,19 +4,38 @@
     Layout = "_DashboardLayout";
 }
 
-<h2>Doctor Dashboard</h2>
+<div class="d-flex justify-content-between align-items-center mb-4">
+
+    <div>
+
+        <h2 class="mb-0">
+            Doctor Dashboard
+        </h2>
+
+        <small class="text-muted">
+
+            Clinic overview and statistics
+
+        </small>
+
+    </div>
+
+</div>
 
 <div class="row">
 
     <div class="col-md-3">
 
-        <div class="card text-center">
+        <div class="card dashboard-card card-primary text-center">
 
             <div class="card-body">
+                <i class="bi bi-people dashboard-icon text-primary"></i>
 
-                <h5>Today's Patients</h5>
+                <h6>Today's Patients</h6>
 
-                <h2>@Model.TodayPatients</h2>
+                <div class="dashboard-number">
+                    @Model.TodayPatients
+                </div>
 
             </div>
 
@@ -26,13 +45,33 @@
 
     <div class="col-md-3">
 
-        <div class="card text-center">
-
+        <div class="card dashboard-card card-success text-center">
             <div class="card-body">
 
-                <h5>Today's Collection</h5>
+                <i class="bi bi-cash-stack dashboard-icon text-success"></i>
 
-                <h2>₹ @Model.TodayCollection</h2>
+                <h6>Today's Collection</h6>
+
+                <div class="dashboard-number">
+                    ₹ @Model.TodayCollection
+                </div>
+
+            </div>
+        </div>
+
+    </div>
+
+    <div class="col-md-3">
+
+        <div class="card dashboard-card card-primary text-center">
+
+            <div class="card-body">
+                <i class="bi bi-person-vcard dashboard-icon text-primary"></i>
+
+                <h6>Total Patients</h6>
+                <div class="dashboard-number">
+                    @Model.TotalPatients
+                </div>
 
             </div>
 
@@ -42,29 +81,16 @@
 
     <div class="col-md-3">
 
-        <div class="card text-center">
+        <div class="card dashboard-card card-primary text-center">
 
             <div class="card-body">
+                <i class="bi bi-journal-medical dashboard-icon text-warning"></i>
 
-                <h5>Total Patients</h5>
+                <h6>Total Visits</h6>
 
-                <h2>@Model.TotalPatients</h2>
-
-            </div>
-
-        </div>
-
-    </div>
-
-    <div class="col-md-3">
-
-        <div class="card text-center">
-
-            <div class="card-body">
-
-                <h5>Total Visits</h5>
-
-                <h2>@Model.TotalVisits</h2>
+                <div class="dashboard-number">
+                    @Model.TotalVisits
+                </div>
 
             </div>
 
@@ -74,19 +100,20 @@
 
 
 </div>
-<div class="row mt-3">
+<div class="row g-3 mt-1">
 
     <div class="col-md-4">
 
-        <div class="card text-center">
+        <div class="card dashboard-card card-success text-center">
 
             <div class="card-body">
+                <i class="bi bi-graph-up-arrow dashboard-icon text-success"></i>
 
-                <h5>Total Revenue</h5>
+                <h6>Total Revenue</h6>
 
-                <h3>
+                <div class="dashboard-number">
                     ₹ @Model.TotalRevenue
-                </h3>
+                </div>
 
             </div>
 
@@ -96,15 +123,16 @@
 
     <div class="col-md-4">
 
-        <div class="card text-center">
+        <div class="card dashboard-card card-danger text-center">
 
             <div class="card-body">
+                <i class="bi bi-cash-stack dashboard-icon text-danger"></i>
 
-                <h5>Total Expense</h5>
+                <h6>Total Expense</h6>
 
-                <h3>
+                <div class="dashboard-number">
                     ₹ @Model.TotalExpense
-                </h3>
+                </div>
 
             </div>
 
@@ -114,15 +142,19 @@
 
     <div class="col-md-4">
 
-        <div class="card text-center">
+        <div class="card dashboard-card card-primary text-center">
 
             <div class="card-body">
 
-                <h5>Net Profit</h5>
+                <i class="bi bi-wallet2 dashboard-icon text-primary"></i>
 
-                <h3>
+                <h6>Net Profit</h6>
+
+                <div class="dashboard-number">
+
                     ₹ @Model.TotalProfit
-                </h3>
+
+                </div>
 
             </div>
 
@@ -131,19 +163,23 @@
     </div>
 
 </div>
-<div class="row mt-3">
+<div class="row g-3 mt-1">
 
     <div class="col-md-4">
 
-        <div class="card text-center">
+        <div class="card dashboard-card card-success text-center">
 
             <div class="card-body">
 
-                <h5>This Month Revenue</h5>
+                <i class="bi bi-graph-up-arrow dashboard-icon text-success"></i>
 
-                <h3>
+                <h6>This Month Revenue</h6>
+
+                <div class="dashboard-number">
+
                     ₹ @Model.MonthRevenue
-                </h3>
+
+                </div>
 
             </div>
 
@@ -153,15 +189,19 @@
 
     <div class="col-md-4">
 
-        <div class="card text-center">
+        <div class="card dashboard-card card-danger text-center">
 
             <div class="card-body">
 
-                <h5>This Month Expense</h5>
+                <i class="bi bi-cash-stack dashboard-icon text-danger"></i>
 
-                <h3>
+                <h6>This Month Expense</h6>
+
+                <div class="dashboard-number">
+
                     ₹ @Model.MonthExpense
-                </h3>
+
+                </div>
 
             </div>
 
@@ -171,15 +211,19 @@
 
     <div class="col-md-4">
 
-        <div class="card text-center">
+        <div class="card dashboard-card card-primary text-center">
 
             <div class="card-body">
 
-                <h5>This Month Profit</h5>
+                <i class="bi bi-piggy-bank dashboard-icon text-primary"></i>
 
-                <h3>
+                <h6>This Month Profit</h6>
+
+                <div class="dashboard-number">
+
                     ₹ @Model.MonthProfit
-                </h3>
+
+                </div>
 
             </div>
 
@@ -194,13 +238,15 @@
 
     <div class="card-header">
 
-        <h5>Low Stock Medicines</h5>
+        <i class="bi bi-exclamation-triangle text-danger me-2"></i>
+
+        Low Stock Medicines
 
     </div>
 
     <div class="card-body">
 
-        <table class="table table-bordered">
+        <table class="table table-hover align-middle">
 
             <thead>
 
@@ -225,7 +271,11 @@
                         </td>
 
                         <td>
-                            @medicine.StockQuantity
+                            <span class="badge bg-danger">
+
+                                @medicine.StockQuantity
+
+                            </span>
                         </td>
 
                     </tr>
@@ -245,13 +295,15 @@
 
     <div class="card-header">
 
-        <h5>Expiring Medicines (Next 30 Days)</h5>
+        <i class="bi bi-clock-history text-warning me-2"></i>
+
+        Expiring Medicines (Next 30 Days)
 
     </div>
 
     <div class="card-body">
 
-        <table class="table table-bordered">
+        <table class="table table-hover align-middle">
 
             <thead>
 
@@ -276,7 +328,13 @@
                         </td>
 
                         <td>
-                            @medicine.ExpiryDate.ToString("dd-MMM-yyyy")
+
+                            <span class="badge bg-warning text-dark">
+
+                                @medicine.ExpiryDate.ToString("dd-MMM-yyyy")
+
+                            </span>
+
                         </td>
 
                     </tr>

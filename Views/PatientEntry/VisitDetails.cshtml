@@ -4,93 +4,247 @@
     Layout = "_DashboardLayout";
 }
 
-<h2>Visit Details</h2>
+<div class="d-flex justify-content-between align-items-center mb-4">
 
-<div class="card">
+    <div>
 
-    <div class="card-body">
+        <h2 class="mb-0">
+            Visit Details
+        </h2>
 
-        <p>
-            <strong>Visit No:</strong>
-            @Model.VisitNumber
-        </p>
-
-        <p>
-            <strong>Patient Code:</strong>
-            @Model.PatientCode
-        </p>
-
-        <p>
-            <strong>Patient Name:</strong>
-            @Model.PatientName
-        </p>
-
-        <p>
-            <strong>Disease:</strong>
-            @Model.Disease
-        </p>
-
-        <p>
-            <strong>Amount:</strong>
-            ₹ @Model.AmountPaid
-        </p>
-
-        <p>
-            <strong>Date:</strong>
-            @Model.VisitDate.ToString("dd-MMM-yyyy hh:mm tt")
-        </p>
-
-        <p>
-            <strong>Notes:</strong>
-            @Model.Notes
-        </p>
+        <small class="text-muted">
+            Complete visit information and prescribed medicines
+        </small>
 
     </div>
 
 </div>
 
-<br />
 
-<h4>Medicines</h4>
 
-<table class="table table-bordered">
+    <div class="card-header bg-white">
+    <hr />
+        <h5 class="mb-0">
+        
 
-    <thead>
+            <i class="bi bi-file-medical me-2"></i>
 
-        <tr>
+            Visit Information 
 
-            <th>Medicine</th>
+        </h5>
 
-            <th>Quantity</th>
+    </div>
+    <hr />
 
-        </tr>
+    <div class="card-body">
 
-    </thead>
+        <div class="row g-4">
 
-    <tbody>
+            <div class="col-md-4">
 
-        @foreach (var medicine in Model.Medicines)
+                <label class="text-muted">
+                    Visit No
+                </label>
+
+                <div class="fw-bold">
+
+                    @Model.VisitNumber
+
+                </div>
+
+            </div>
+
+            <div class="col-md-4">
+
+                <label class="text-muted">
+                    Patient Code
+                </label>
+
+                <div class="fw-bold">
+
+                    @Model.PatientCode
+
+                </div>
+
+            </div>
+
+            <div class="col-md-4">
+
+                <label class="text-muted">
+                    Patient Name
+                </label>
+
+                <div class="fw-bold">
+
+                    @Model.PatientName
+
+                </div>
+
+            </div>
+
+            <div class="col-md-4">
+
+                <label class="text-muted">
+                    Disease
+                </label>
+
+                <div>
+
+                    <span class="badge bg-info text-dark">
+
+                        @Model.Disease
+
+                    </span>
+
+                </div>
+
+            </div>
+
+            <div class="col-md-4">
+
+                <label class="text-muted">
+                    Amount Paid
+                </label>
+
+                <div class="fw-bold text-success">
+
+                    ₹ @Model.AmountPaid
+
+                </div>
+
+            </div>
+
+            <div class="col-md-4">
+
+                <label class="text-muted">
+                    Visit Date
+                </label>
+
+                <div class="fw-bold">
+
+                    @Model.VisitDate.ToString("dd-MMM-yyyy hh:mm tt")
+
+                </div>
+
+            </div>
+
+        </div>
+
+        @if (!string.IsNullOrWhiteSpace(Model.Notes))
         {
-            <tr>
+            <hr />
 
-                <td>
-                    @medicine.MedicineName
-                </td>
+            <label class="text-muted">
+                Notes
+            </label>
 
-                <td>
-                    @medicine.Quantity
-                </td>
+            <div class="mt-2 p-3 bg-light rounded ">
 
-            </tr>
+                @Model.Notes
+
+            </div>
         }
 
-    </tbody>
+    
 
-</table>
+</div>
 
-<a asp-action="VisitHistory"
-       class="btn btn-secondary">
 
-    Back
 
-</a>
+    <div class="card-header bg-white">
+
+        <h5 class="mb-0">
+        <hr />
+
+            <i class="bi bi-capsule-pill me-2"></i>
+
+            Prescribed Medicines
+
+        </h5>
+
+    </div>
+    <hr />
+
+    <div class="card-body">
+
+        <div class="table-responsive">
+
+            <table class="table table-hover align-middle">
+
+                <thead class="table-light">
+
+                    <tr>
+
+                        <th>Medicine</th>
+
+                        <th width="150">
+                            Quantity
+                        </th>
+
+                    </tr>
+
+                </thead>
+
+                <tbody>
+
+                    @if (Model.Medicines.Any())
+                    {
+                        @foreach (var medicine in Model.Medicines)
+                        {
+                            <tr>
+
+                                <td>
+
+                                    @medicine.MedicineName
+
+                                </td>
+
+                                <td>
+
+                                    <span class="badge bg-primary">
+
+                                        @medicine.Quantity
+
+                                    </span>
+
+                                </td>
+
+                            </tr>
+                        }
+                    }
+                    else
+                    {
+                        <tr>
+
+                            <td colspan="2"
+                                class="text-center text-muted py-4">
+
+                                No medicines prescribed.
+
+                            </td>
+
+                        </tr>
+                    }
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+    </div>
+
+
+
+<div class="d-flex justify-content-start">
+
+    <a asp-action="VisitHistory"
+       class="btn btn-outline-secondary">
+
+        <i class="bi bi-arrow-left me-1"></i>
+
+        Back to Visit History
+
+    </a>
+
+</div>

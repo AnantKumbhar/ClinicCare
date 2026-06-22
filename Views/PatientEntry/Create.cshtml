@@ -5,226 +5,407 @@
 }
 @if (TempData["Success"] != null)
 {
-    <div class="alert alert-success">
+    <div class="alert alert-success toast-message alert-dismissible fade show auto-alert">
+
         @TempData["Success"]
+
     </div>
 }
 @if (TempData["Error"] != null)
 {
-    <div class="alert alert-danger">
+    <div class="alert alert-danger toast-message alert-dismissible fade show auto-alert">
+
         @TempData["Error"]
+
     </div>
 }
-<h2>Patient Entry</h2>
+<div class="d-flex justify-content-between align-items-center mb-4">
+
+    <div>
+
+        <h2 class="mb-0">
+            Patient Entry
+        </h2>
+
+        <small class="text-muted">
+            Register patient visit and prescribe medicines
+        </small>
+
+    </div>
+
+</div>
 
 <form method="post">
-    <input asp-for="AppointmentId"
-           type="hidden" />
 
-    <div class="row">
-        <div asp-validation-summary="All"
-             class="text-danger">
-        </div>
+        <input asp-for="AppointmentId" type="hidden" />
 
-        <div class="col-md-4">
-            <label>Patient ID</label>
-            <input asp-for="PatientCode"
-                   id="patientSearch"
-                   autocomplete="off"
-                   class="form-control" />
-
-            <div id="patientSuggestions"
-                 class="list-group">
+        @if (!ViewData.ModelState.IsValid)
+        {
+            <div asp-validation-summary="All"
+                 class="alert alert-danger">
             </div>
-        </div>
+        }
 
-        <div class="col-md-4">
-            <label>Full Name</label>
-            <input asp-for="FullName" id="fullName" class="form-control" />
-        </div>
-        <span asp-validation-for="FullName"
-              class="text-danger"></span>
+        <!-- Patient Information -->
 
-        <div class="col-md-4">
-            <label>Date Of Birth</label>
-            <input asp-for="DateOfBirth"
-                   id="dateOfBirth"
-                   type="date"
-                   class="form-control" />
-        </div>
-        <span asp-validation-for="DateOfBirth"
-              class="text-danger"></span>
-        <div class="col-md-2">
+        <div class="card shadow-sm border-0 mb-4">
 
-            <label>Age</label>
+            <div class="card-header bg-white">
 
-            <div class="form-control bg-light"
-                 id="ageDisplay">
-                -
+                <h5 class="mb-0">
+
+                    <i class="bi bi-person-vcard me-2"></i>
+
+                    Patient Information
+
+                </h5>
+
             </div>
 
+            <div class="card-body">
+
+                <div class="row g-3">
+
+                    <div class="col-md-4">
+
+                        <label class="fw-semibold">
+                            Patient ID
+                        </label>
+
+                        <input asp-for="PatientCode"
+                               id="patientSearch"
+                               autocomplete="off"
+                               class="form-control" />
+
+                        <div id="patientSuggestions"
+                             class="list-group position-absolute w-100"
+                             style="z-index:1000;">
+                        </div>
+
+                    </div>
+
+                    <div class="col-md-4">
+
+                        <label class="fw-semibold">
+                            Full Name
+                        </label>
+
+                        <input asp-for="FullName"
+                               id="fullName"
+                               class="form-control" />
+
+                        <span asp-validation-for="FullName"
+                              class="text-danger">
+                        </span>
+
+                    </div>
+
+                    <div class="col-md-4">
+
+                        <label class="fw-semibold">
+                            Date Of Birth
+                        </label>
+
+                        <input asp-for="DateOfBirth"
+                               id="dateOfBirth"
+                               type="date"
+                               class="form-control" />
+
+                        <span asp-validation-for="DateOfBirth"
+                              class="text-danger">
+                        </span>
+
+                    </div>
+
+                    <div class="col-md-2">
+
+                        <label class="fw-semibold">
+                            Age
+                        </label>
+
+                        <div class="form-control text-center fw-bold bg-light"
+                             id="ageDisplay">
+
+                            -
+
+                        </div>
+
+                    </div>
+
+                    <div class="col-md-4">
+
+                        <label class="fw-semibold">
+                            Gender
+                        </label>
+
+                        <select asp-for="Gender"
+                                id="gender"
+                                class="form-control">
+
+                            <option value="">
+                                Select
+                            </option>
+
+                            <option>
+                                Male
+                            </option>
+
+                            <option>
+                                Female
+                            </option>
+
+                        </select>
+
+                        <span asp-validation-for="Gender"
+                              class="text-danger">
+                        </span>
+
+                    </div>
+
+                    <div class="col-md-4">
+
+                        <label class="fw-semibold">
+                            Mobile Number
+                        </label>
+
+                        <input asp-for="MobileNumber"
+                               id="mobileNumber"
+                               class="form-control" />
+
+                        <span asp-validation-for="MobileNumber"
+                              class="text-danger">
+                        </span>
+
+                    </div>
+
+                </div>
+
+            </div>
+
         </div>
 
-    </div>
+        <!-- Visit Information -->
 
-    <br />
+        <div class="card shadow-sm border-0 mb-4">
 
-    <div class="row">
+            <div class="card-header bg-white">
 
-        <div class="col-md-4">
-            <label>Gender</label>
-            <select asp-for="Gender" id="gender" class="form-control">
-                <option value="">Select</option>
-                <option>Male</option>
-                <option>Female</option>
-            </select>
-        </div>
-        <span asp-validation-for="Gender"
-              class="text-danger"></span>
+                <h5 class="mb-0">
 
-        <div class="col-md-4">
-            <label>Mobile Number</label>
-            <input asp-for="MobileNumber" id="mobileNumber"
-                   class="form-control" />
-        </div>
-        <span asp-validation-for="MobileNumber"
-              class="text-danger"></span>
+                    <i class="bi bi-journal-medical me-2"></i>
 
-    </div>
+                    Visit Information
 
-    <br />
+                </h5>
 
-    <div class="row">
+            </div>
 
-        <div class="col-md-4">
+            <div class="card-body">
 
-            <label>Disease Category</label>
+                <div class="row g-3">
 
-            <select asp-for="DiseaseCategoryId"
-                    asp-items="Model.DiseaseCategories"
-                    class="form-control">
+                    <div class="col-md-4">
 
-                <option value="">
-                    Select Disease
-                </option>
+                        <label class="fw-semibold">
+                            Disease Category
+                        </label>
 
-            </select>
-            <span asp-validation-for="DiseaseCategoryId"
-                  class="text-danger"></span>
+                        <select asp-for="DiseaseCategoryId"
+                                asp-items="Model.DiseaseCategories"
+                                class="form-control">
 
-        </div>
+                            <option value="">
+                                Select Disease
+                            </option>
 
-        <div class="col-md-4">
-            <label>Amount</label>
-            <input asp-for="AmountPaid"
-                   class="form-control" />
-        </div>
-        <span asp-validation-for="AmountPaid"
-              class="text-danger"></span>
+                        </select>
 
-    </div>
+                        <span asp-validation-for="DiseaseCategoryId"
+                              class="text-danger">
+                        </span>
 
-    <br />
-    <hr />
+                    </div>
 
-    <h4>Medicines</h4>
+                    <div class="col-md-4">
 
-    <div class="row">
+                        <label class="fw-semibold">
+                            Amount Paid
+                        </label>
 
-        <div class="col-md-5">
+                        <input asp-for="AmountPaid"
+                               class="form-control" />
 
-            <label>Medicine</label>
+                        <span asp-validation-for="AmountPaid"
+                              class="text-danger">
+                        </span>
 
-            <select id="medicineDropdown"
-                    class="form-control">
+                    </div>
 
-                <option value="">
-                    Select Medicine
-                </option>
+                </div>
 
-                @foreach (var medicine in Model.MedicineOptions)
-                {
-                    <option value="@medicine.Value">
-                        @medicine.Text
-                    </option>
-                }
-
-            </select>
+            </div>
 
         </div>
 
-        <div class="col-md-3">
+        <!-- Medicines -->
 
-            <label>Quantity</label>
+        <div class="card shadow-sm border-0 mb-4">
 
-            <input type="number"
-                   id="medicineQty"
-                   min="1"
-                   class="form-control" />
+            <div class="card-header bg-white">
+
+                <h5 class="mb-0">
+
+                    <i class="bi bi-capsule-pill me-2"></i>
+
+                    Medicines
+
+                </h5>
+
+            </div>
+
+            <div class="card-body">
+
+                <div class="row g-3 align-items-end">
+
+                    <div class="col-md-5">
+
+                        <label class="fw-semibold">
+                            Medicine
+                        </label>
+
+                        <select id="medicineDropdown"
+                                class="form-control">
+
+                            <option value="">
+                                Select Medicine
+                            </option>
+
+                            @foreach (var medicine in Model.MedicineOptions)
+                            {
+                                <option value="@medicine.Value">
+                                    @medicine.Text
+                                </option>
+                            }
+
+                        </select>
+
+                    </div>
+
+                    <div class="col-md-3">
+
+                        <label class="fw-semibold">
+                            Quantity
+                        </label>
+
+                        <input type="number"
+                               id="medicineQty"
+                               min="1"
+                               class="form-control" />
+
+                    </div>
+
+                    <div class="col-md-2">
+
+                        <button type="button"
+                                id="addMedicineBtn"
+                                class="btn btn-primary w-100">
+
+                            <i class="bi bi-plus-circle me-1"></i>
+
+                            Add
+
+                        </button>
+
+                    </div>
+
+                </div>
+
+                <hr />
+
+                <table class="table table-hover align-middle"
+                       id="medicineTable">
+
+                    <thead class="table-light">
+
+                        <tr>
+
+                            <th>Medicine</th>
+
+                            <th>Quantity</th>
+
+                            <th width="120">
+                                Action
+                            </th>
+
+                        </tr>
+
+                    </thead>
+
+                    <tbody>
+                    </tbody>
+
+                </table>
+
+                <div id="hiddenMedicineInputs">
+                </div>
+
+            </div>
 
         </div>
 
-        <div class="col-md-2">
+        <!-- Notes -->
 
-            <label>&nbsp;</label>
+        <div class="card shadow-sm border-0 mb-4">
 
-            <button type="button"
-                    id="addMedicineBtn"
-                    class="btn btn-success form-control">
+            <div class="card-header bg-white">
 
-                Add
+                <h5 class="mb-0">
+
+                    <i class="bi bi-card-text me-2"></i>
+
+                    Notes
+
+                </h5>
+
+            </div>
+
+            <div class="card-body">
+
+                <textarea asp-for="Notes"
+                          rows="4"
+                          class="form-control">
+        </textarea>
+
+            </div>
+
+        </div>
+
+        <!-- Save Button -->
+
+        <div class="text-end">
+
+            <button class="btn btn-primary btn-lg px-4">
+
+                <i class="bi bi-check-circle me-2"></i>
+
+                Save Entry
 
             </button>
 
         </div>
-
-    </div>
-
-    <br />
-
-    <table class="table table-bordered"
-           id="medicineTable">
-
-        <thead>
-
-            <tr>
-
-                <th>Medicine</th>
-
-                <th>Quantity</th>
-
-                <th>Action</th>
-
-            </tr>
-
-        </thead>
-
-        <tbody>
-        </tbody>
-
-    </table>
-
-    <div id="hiddenMedicineInputs">
-    </div>
-
-    <div>
-        <label>Notes</label>
-        <textarea asp-for="Notes"
-                      class="form-control">
-        </textarea>
-        </div>
-
-        <br />
-
-        <button class="btn btn-primary">
-            Save Entry
-        </button>
+        
 
     </form>
+
 
     @section Scripts
     {
         <script>
+                 setTimeout(function () {
+
+            $(".auto-alert").fadeOut("slow");
+
+        }, 3000);
 
             $("#patientSearch").on("input", function () {
 

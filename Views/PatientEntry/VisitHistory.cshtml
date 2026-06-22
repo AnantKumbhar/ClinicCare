@@ -4,76 +4,160 @@
     Layout = "_DashboardLayout";
 }
 
-<h2>Visit History</h2>
+<div class="d-flex justify-content-between align-items-center mb-4">
 
-<table class="table table-bordered">
+    <div>
 
-    <thead>
+        <h2 class="mb-0">
+            Visit History
+        </h2>
 
-        <tr>
+        <small class="text-muted">
+            View all patient visit records
+        </small>
 
-            <th>Visit No</th>
+    </div>
 
-            <th>Patient Code</th>
+</div>
 
-            <th>Patient Name</th>
+<div class="card shadow-sm border-0">
 
-            <th>Disease</th>
+    <div class="card-header bg-white">
 
-            <th>Amount</th>
+        <h5 class="mb-0">
 
-            <th>Date</th>
+            <i class="bi bi-clock-history me-2"></i>
 
-            <th>Action</th>
+            All Visits
 
-        </tr>
+        </h5>
+        
 
-    </thead>
+    </div>
 
-    <tbody>
+    
 
-        @foreach (var item in Model)
-        {
-            <tr>
+        <div class="table-responsive">
 
-                <td>@item.VisitNumber</td>
+            <table class="table table-hover align-middle">
 
-                <td>@item.PatientCode</td>
+                <thead class="table-light">
 
-                <td>
+                    <tr>
 
-                    <a asp-action="PatientProfile"
-                           asp-route-id="@item.PatientId">
+                        <th>Visit No</th>
 
-                        @item.PatientName
+                        <th>Patient Code</th>
 
-                    </a>
+                        <th>Patient Name</th>
 
-                </td>
+                        <th>Disease</th>
 
-                <td>@item.Disease</td>
+                        <th>Amount</th>
 
-                <td>₹ @item.AmountPaid</td>
+                        <th>Date</th>
 
-                <td>
-                    @item.VisitDate.ToString("dd-MMM-yyyy")
-                </td>
+                        <th width="120">Action</th>
 
-                <td>
+                    </tr>
 
-                    <a asp-action="VisitDetails"
-                           asp-route-id="@item.VisitId"
-                           class="btn btn-info btn-sm">
+                </thead>
 
-                        View
+                <tbody>
 
-                    </a>
+                    @if (Model.Any())
+                    {
+                        @foreach (var item in Model)
+                        {
+                            <tr>
 
-                </td>
+                                <td>
 
-            </tr>
-        }
+                                    <span class="badge bg-primary">
 
-    </tbody>
+                                        @item.VisitNumber
 
-</table>
+                                    </span>
+
+                                </td>
+
+                                <td>
+                                    @item.PatientCode
+                                </td>
+
+                                <td>
+
+                                    <a asp-action="PatientProfile"
+                                       asp-route-id="@item.PatientId"
+                                       class="text-decoration-none fw-semibold">
+
+                                        @item.PatientName
+
+                                    </a>
+
+                                </td>
+
+                                <td>
+
+                                    <span class="badge bg-info text-dark">
+
+                                        @item.Disease
+
+                                    </span>
+
+                                </td>
+
+                                <td class="fw-bold text-success">
+
+                                    ₹ @item.AmountPaid
+
+                                </td>
+
+                                <td>
+
+                                    @item.VisitDate.ToString("dd-MMM-yyyy")
+
+                                </td>
+
+                                <td>
+
+                                    <a asp-action="VisitDetails"
+                                       asp-route-id="@item.VisitId"
+                                       class="btn btn-outline-primary btn-sm">
+
+                                        <i class="bi bi-eye me-1"></i>
+
+                                        View
+
+                                    </a>
+
+                                </td>
+
+                            </tr>
+                        }
+                    }
+                    else
+                    {
+                        <tr>
+
+                            <td colspan="7"
+                                class="text-center text-muted py-4">
+
+                                <i class="bi bi-inbox fs-4 d-block mb-2"></i>
+
+                                No visit history found.
+
+                            </td>
+
+                        </tr>
+                    }
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+    
+
+</div>

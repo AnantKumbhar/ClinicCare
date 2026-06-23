@@ -1,19 +1,57 @@
-﻿@{
+﻿@model ClinicCare.ViewModels.DashboardViewModel
+
+@{
     Layout = "_DashboardLayout";
 }
-<h2>Compunder Dashboard</h2>
+@if (TempData["Success"] != null)
+{
+    <div class="alert alert-success toast-message auto-alert">
+
+        @TempData["Success"]
+
+    </div>
+}
+@if (TempData["Error"] != null)
+{
+    <div class="alert alert-danger toast-message auto-alert">
+
+        @TempData["Error"]
+
+    </div>
+}
+
+<div class="d-flex justify-content-between align-items-center mb-4">
+
+    <div>
+
+        <h2 class="mb-0">
+            Compounder Dashboard
+        </h2>
+
+        <small class="text-muted">
+
+            Clinic overview and statistics
+
+        </small>
+
+    </div>
+
+</div>
 
 <div class="row">
 
     <div class="col-md-3">
 
-        <div class="card text-center">
+        <div class="card dashboard-card card-primary text-center">
 
             <div class="card-body">
+                <i class="bi bi-people dashboard-icon text-primary"></i>
 
-                <h5>Today's Patients</h5>
+                <h6>Today's Patients</h6>
 
-                <h2>@Model.TodayPatients</h2>
+                <div class="dashboard-number">
+                    @Model.TodayPatients
+                </div>
 
             </div>
 
@@ -23,13 +61,33 @@
 
     <div class="col-md-3">
 
-        <div class="card text-center">
-
+        <div class="card dashboard-card card-success text-center">
             <div class="card-body">
 
-                <h5>Today's Collection</h5>
+                <i class="bi bi-cash-stack dashboard-icon text-success"></i>
 
-                <h2>₹ @Model.TodayCollection</h2>
+                <h6>Today's Collection</h6>
+
+                <div class="dashboard-number">
+                    ₹ @Model.TodayCollection
+                </div>
+
+            </div>
+        </div>
+
+    </div>
+
+    <div class="col-md-3">
+
+        <div class="card dashboard-card card-primary text-center">
+
+            <div class="card-body">
+                <i class="bi bi-person-vcard dashboard-icon text-primary"></i>
+
+                <h6>Total Patients</h6>
+                <div class="dashboard-number">
+                    @Model.TotalPatients
+                </div>
 
             </div>
 
@@ -39,29 +97,16 @@
 
     <div class="col-md-3">
 
-        <div class="card text-center">
+        <div class="card dashboard-card card-primary text-center">
 
             <div class="card-body">
+                <i class="bi bi-journal-medical dashboard-icon text-warning"></i>
 
-                <h5>Total Patients</h5>
+                <h6>Total Visits</h6>
 
-                <h2>@Model.TotalPatients</h2>
-
-            </div>
-
-        </div>
-
-    </div>
-
-    <div class="col-md-3">
-
-        <div class="card text-center">
-
-            <div class="card-body">
-
-                <h5>Total Visits</h5>
-
-                <h2>@Model.TotalVisits</h2>
+                <div class="dashboard-number">
+                    @Model.TotalVisits
+                </div>
 
             </div>
 
@@ -78,13 +123,15 @@
 
     <div class="card-header">
 
-        <h5>Low Stock Medicines</h5>
+        <i class="bi bi-exclamation-triangle text-danger me-2"></i>
+
+        Low Stock Medicines
 
     </div>
 
     <div class="card-body">
 
-        <table class="table table-bordered">
+        <table class="table table-hover align-middle">
 
             <thead>
 
@@ -109,7 +156,11 @@
                         </td>
 
                         <td>
-                            @medicine.StockQuantity
+                            <span class="badge bg-danger">
+
+                                @medicine.StockQuantity
+
+                            </span>
                         </td>
 
                     </tr>
@@ -129,13 +180,15 @@
 
     <div class="card-header">
 
-        <h5>Expiring Medicines (Next 30 Days)</h5>
+        <i class="bi bi-clock-history text-warning me-2"></i>
+
+        Expiring Medicines (Next 30 Days)
 
     </div>
 
     <div class="card-body">
 
-        <table class="table table-bordered">
+        <table class="table table-hover align-middle">
 
             <thead>
 
@@ -160,7 +213,13 @@
                         </td>
 
                         <td>
-                            @medicine.ExpiryDate.ToString("dd-MMM-yyyy")
+
+                            <span class="badge bg-warning text-dark">
+
+                                @medicine.ExpiryDate.ToString("dd-MMM-yyyy")
+
+                            </span>
+
                         </td>
 
                     </tr>

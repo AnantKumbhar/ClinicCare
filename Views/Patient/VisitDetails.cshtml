@@ -4,93 +4,246 @@
     Layout = "_PatientLayout";
 }
 
-<h2>Visit Details</h2>
+<div class="d-flex justify-content-between align-items-center mb-4">
 
-<div class="card">
+    <div>
 
-    <div class="card-body">
+        <h2 class="mb-1">
+            Visit Details
+        </h2>
 
-        <p>
-            <strong>Visit No:</strong>
-            @Model.VisitNumber
-        </p>
-
-        <p>
-            <strong>Patient Code:</strong>
-            @Model.PatientCode
-        </p>
-
-        <p>
-            <strong>Patient Name:</strong>
-            @Model.PatientName
-        </p>
-
-        <p>
-            <strong>Disease:</strong>
-            @Model.Disease
-        </p>
-
-        <p>
-            <strong>Amount:</strong>
-            ₹ @Model.AmountPaid
-        </p>
-
-        <p>
-            <strong>Date:</strong>
-            @Model.VisitDate.ToString("dd-MMM-yyyy hh:mm tt")
-        </p>
-
-        <p>
-            <strong>Notes:</strong>
-            @Model.Notes
+        <p class="text-muted mb-0">
+            Detailed information about your clinic visit.
         </p>
 
     </div>
 
+    <a asp-action="VisitHistory"
+       class="btn btn-outline-secondary">
+
+        <i class="bi bi-arrow-left me-1"></i>
+
+        Back
+
+    </a>
+
 </div>
 
-<br />
 
-<h4>Medicines</h4>
 
-<table class="table table-bordered">
+    <div class="card-header bg-white">
 
-    <thead>
+        <h5 class="mb-0">
 
-        <tr>
+            <i class="bi bi-file-medical me-2"></i>
 
-            <th>Medicine</th>
+            Visit Information
 
-            <th>Quantity</th>
+        </h5>
 
-        </tr>
+    </div>
 
-    </thead>
+    <div class="card-body">
 
-    <tbody>
+        <div class="row g-4">
 
-        @foreach (var medicine in Model.Medicines)
-        {
-            <tr>
+            <div class="col-md-4">
 
-                <td>
-                    @medicine.MedicineName
-                </td>
+                <div class="border rounded p-3">
 
-                <td>
-                    @medicine.Quantity
-                </td>
+                    <small class="text-muted d-block">
+                        Visit Number
+                    </small>
 
-            </tr>
-        }
+                    <div class="fw-semibold">
+                        @Model.VisitNumber
+                    </div>
 
-    </tbody>
+                </div>
 
-</table>
+            </div>
 
-<a asp-action="VisitHistory"
-       class="btn btn-secondary">
+            <div class="col-md-4">
 
-    Back
+                <div class="border rounded p-3">
 
-</a>
+                    <small class="text-muted d-block">
+                        Patient Code
+                    </small>
+
+                    <div class="fw-semibold">
+                        @Model.PatientCode
+                    </div>
+
+                </div>
+
+            </div>
+
+            <div class="col-md-4">
+
+                <div class="border rounded p-3">
+
+                    <small class="text-muted d-block">
+                        Patient Name
+                    </small>
+
+                    <div class="fw-semibold">
+                        @Model.PatientName
+                    </div>
+
+                </div>
+
+            </div>
+
+            <div class="col-md-4">
+
+                <div class="border rounded p-3">
+
+                    <small class="text-muted d-block">
+                        Disease
+                    </small>
+
+                    <div class="fw-semibold">
+                        @Model.Disease
+                    </div>
+
+                </div>
+
+            </div>
+
+            <div class="col-md-4">
+
+                <div class="border rounded p-3">
+
+                    <small class="text-muted d-block">
+                        Consultation Fee
+                    </small>
+
+                    <div class="fw-bold text-success">
+                        ₹ @Model.AmountPaid
+                    </div>
+
+                </div>
+
+            </div>
+
+            <div class="col-md-4">
+
+                <div class="border rounded p-3">
+
+                    <small class="text-muted d-block">
+                        Visit Date
+                    </small>
+
+                    <div class="fw-semibold">
+                        @Model.VisitDate.ToString("dd-MMM-yyyy hh:mm tt")
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <div class="mt-4">
+
+            <label class="fw-semibold mb-2">
+                Doctor Notes
+            </label>
+
+            <div class="border rounded p-3 bg-light">
+
+                @(string.IsNullOrWhiteSpace(Model.Notes)
+                    ? "No notes available."
+                    : Model.Notes)
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+
+    <p />
+
+    <div class="card-header bg-white">
+
+        <h5 class="mb-0">
+
+            <i class="bi bi-capsule-pill me-2"></i>
+
+            Prescribed Medicines
+
+        </h5>
+
+    </div>
+
+    <div class="card-body">
+
+        <div class="table-responsive">
+
+            <table class="table table-hover align-middle">
+
+                <thead class="table-light">
+
+                    <tr>
+
+                        <th>Medicine Name</th>
+
+                        <th width="150">
+                            Quantity
+                        </th>
+
+                    </tr>
+
+                </thead>
+
+                <tbody>
+
+                    @if (Model.Medicines.Any())
+                    {
+                        @foreach (var medicine in Model.Medicines)
+                        {
+                            <tr>
+
+                                <td>
+
+                                    @medicine.MedicineName
+
+                                </td>
+
+                                <td>
+
+                                    <span class="badge bg-primary">
+
+                                        @medicine.Quantity
+
+                                    </span>
+
+                                </td>
+
+                            </tr>
+                        }
+                    }
+                    else
+                    {
+                        <tr>
+
+                            <td colspan="2"
+                                class="text-center text-muted py-4">
+
+                                No medicines prescribed.
+
+                            </td>
+
+                        </tr>
+                    }
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+    </div>

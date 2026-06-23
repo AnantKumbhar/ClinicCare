@@ -4,77 +4,215 @@
     Layout = "_PatientLayout";
 }
 
-<h2>My Visit History</h2>
+<div class="d-flex justify-content-between align-items-center mb-4">
 
-<table class="table table-bordered">
+    <div>
 
-    <thead>
+        <h2 class="mb-1">
+            My Visit History
+        </h2>
 
-        <tr>
+        <p class="text-muted mb-0">
+            View all your clinic visits and consultation records.
+        </p>
 
-            <th>Visit No</th>
+    </div>
 
-            <th>Date</th>
+</div>
 
-            <th>Disease</th>
+<div class="row g-3 mb-4">
 
-            <th>Amount</th>
+    <div class="col-md-4">
 
-            <th>Action</th>
+        <div class="card border-0 shadow-sm">
 
-        </tr>
+            <div class="card-body text-center">
 
-    </thead>
+                <i class="bi bi-journal-medical text-primary fs-1"></i>
 
-    <tbody>
+                <h6 class="mt-2">
+                    Total Visits
+                </h6>
 
-        @if (Model.Any())
-        {
-            foreach (var item in Model)
-            {
-                <tr>
+                <h5 class="fw-bold">
 
-                    <td>@item.VisitNumber</td>
+                    @Model.Count
 
-                    <td>
-                        @item.VisitDate.ToString("dd-MMM-yyyy")
-                    </td>
+                </h5>
 
-                    <td>@item.Disease</td>
+            </div>
 
-                    <td>
-                        ₹ @item.AmountPaid
-                    </td>
+        </div>
 
-                    <td>
+    </div>
 
-                        <a asp-action="VisitDetails"
-                           asp-route-id="@item.VisitId"
-                           class="btn btn-primary btn-sm">
+    <div class="col-md-4">
 
-                            View Details
+        <div class="card border-0 shadow-sm">
 
-                        </a>
+            <div class="card-body text-center">
 
-                    </td>
+                <i class="bi bi-cash-stack text-success fs-1"></i>
 
-                </tr>
-            }
-        }
-        else
-        {
-            <tr>
+                <h6 class="mt-2">
+                    Total Amount Paid
+                </h6>
 
-                <td colspan="5"
-                    class="text-center">
+                <h5 class="fw-bold">
 
-                    No Visits Found
+                    ₹ @Model.Sum(x => x.AmountPaid)
 
-                </td>
+                </h5>
 
-            </tr>
-        }
+            </div>
 
-    </tbody>
+        </div>
 
-</table>
+    </div>
+
+    <div class="col-md-4">
+
+        <div class="card border-0 shadow-sm">
+
+            <div class="card-body text-center">
+
+                <i class="bi bi-calendar-check text-info fs-1"></i>
+
+                <h6 class="mt-2">
+                    Last Visit
+                </h6>
+
+                <h5 class="fw-bold">
+
+                    @(Model.Any()
+                        ? Model.Max(x => x.VisitDate).ToString("dd-MMM-yyyy")
+                        : "No Visits")
+
+                </h5>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+<div class="card border-0 shadow-sm">
+
+    <div class="card-header bg-white">
+
+        <h5 class="mb-0">
+
+            <i class="bi bi-clock-history me-2"></i>
+
+            Visit Records
+
+        </h5>
+
+    </div>
+
+    <div class="card-body">
+
+        <div class="table-responsive">
+
+            <table class="table table-hover align-middle">
+
+                <thead class="table-light">
+
+                    <tr>
+
+                        <th>Visit No</th>
+
+                        <th>Date</th>
+
+                        <th>Disease</th>
+
+                        <th>Amount</th>
+
+                        <th width="180">
+                            Action
+                        </th>
+
+                    </tr>
+
+                </thead>
+
+                <tbody>
+
+                    @if (Model.Any())
+                    {
+                        @foreach (var item in Model)
+                        {
+                            <tr>
+
+                                <td>
+
+                                    <span class="badge bg-primary">
+
+                                        @item.VisitNumber
+
+                                    </span>
+
+                                </td>
+
+                                <td>
+
+                                    @item.VisitDate.ToString("dd-MMM-yyyy")
+
+                                </td>
+
+                                <td>
+
+                                    @item.Disease
+
+                                </td>
+
+                                <td class="fw-bold text-success">
+
+                                    ₹ @item.AmountPaid
+
+                                </td>
+
+                                <td>
+
+                                    <a asp-action="VisitDetails"
+                                       asp-route-id="@item.VisitId"
+                                       class="btn btn-outline-primary btn-sm">
+
+                                        <i class="bi bi-eye me-1"></i>
+
+                                        View Details
+
+                                    </a>
+
+                                </td>
+
+                            </tr>
+                        }
+                    }
+                    else
+                    {
+                        <tr>
+
+                            <td colspan="5"
+                                class="text-center text-muted py-4">
+
+                                <i class="bi bi-inbox fs-3 d-block mb-2"></i>
+
+                                No visit records found.
+
+                            </td>
+
+                        </tr>
+                    }
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+    </div>
+
+</div>

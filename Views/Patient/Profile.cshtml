@@ -4,76 +4,140 @@
     Layout = "_PatientLayout";
 }
 
-<h2>My Profile</h2>
+<div class="mb-4">
 
-<hr />
+    <h2 class="mb-1">
+        My Profile
+    </h2>
 
-<div class="card">
-
-    <div class="card-body">
-
-        <div class="row mb-3">
-
-            <div class="col-md-6">
-
-                <label>Patient Code</label>
-
-                <input class="form-control"
-                       value="@Model.PatientCode"
-                       readonly />
-
-            </div>
-
-            <div class="col-md-6">
-
-                <label>Full Name</label>
-
-                <input class="form-control"
-                       value="@Model.FullName"
-                       readonly />
-
-            </div>
-
-        </div>
-
-        <div class="row mb-3">
-
-            <div class="col-md-6">
-
-                <label>Date Of Birth</label>
-
-                <input class="form-control"
-                       value="@Model.DateOfBirth.ToString("dd-MMM-yyyy")"
-                       readonly />
-
-            </div>
-
-            <div class="col-md-6">
-
-                <label>Gender</label>
-
-                <input class="form-control"
-                       value="@Model.Gender"
-                       readonly />
-
-            </div>
-
-        </div>
-
-        <div class="row">
-
-            <div class="col-md-6">
-
-                <label>Mobile Number</label>
-
-                <input class="form-control"
-                       value="@Model.MobileNumber"
-                       readonly />
-
-            </div>
-
-        </div>
-
-    </div>
+    <p class="text-muted mb-0">
+        View your personal information registered with ClinicCare.
+    </p>
 
 </div>
+
+
+
+        
+
+        <div class="row g-4">
+
+            <div class="col-md-6">
+
+                <div class="border rounded p-3 h-100">
+
+                    <small class="text-muted d-block">
+                        Patient Code
+                    </small>
+
+                    <div class="fw-semibold">
+                        @Model.PatientCode
+                    </div>
+
+                </div>
+
+            </div>
+
+            <div class="col-md-6">
+
+                <div class="border rounded p-3 h-100">
+
+                    <small class="text-muted d-block">
+                        Full Name
+                    </small>
+
+                    <div class="fw-semibold">
+                        @Model.FullName
+                    </div>
+
+                </div>
+
+            </div>
+
+            <div class="col-md-6">
+
+                <div class="border rounded p-3 h-100">
+
+                    <small class="text-muted d-block">
+                        Date Of Birth
+                    </small>
+
+                    <div class="fw-semibold">
+                        @Model.DateOfBirth.ToString("dd-MMM-yyyy")
+                    </div>
+
+                </div>
+
+            </div>
+
+            <div class="col-md-6">
+
+                <div class="border rounded p-3 h-100">
+
+                    <small class="text-muted d-block">
+                        Gender
+                    </small>
+
+                    <div class="fw-semibold">
+                        @Model.Gender
+                    </div>
+
+                </div>
+
+            </div>
+
+            <div class="col-md-6">
+
+                <div class="border rounded p-3 h-100">
+
+                    <small class="text-muted d-block">
+                        Mobile Number
+                    </small>
+
+                    <div class="fw-semibold">
+                        @Model.MobileNumber
+                    </div>
+
+                </div>
+
+            </div>
+
+            <div class="col-md-6">
+
+                <div class="border rounded p-3 h-100">
+
+                    <small class="text-muted d-block">
+                        Total Visits
+                    </small>
+
+                    <div class="fw-semibold">
+                        @Model.TotalVisits
+                    </div>
+
+                </div>
+
+            </div>
+
+            <div class="col-md-6">
+
+                <div class="border rounded p-3 h-100">
+
+                    <small class="text-muted d-block">
+                        Last Visit
+                    </small>
+
+                    <div class="fw-semibold">
+
+                        @(Model.LastVisitDate == null
+                            ? "No Visits Yet"
+                            : Model.LastVisitDate.Value.ToString("dd-MMM-yyyy"))
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        

@@ -6,128 +6,270 @@
 
 @if (TempData["Success"] != null)
 {
-    <div class="alert alert-success">
+    <div class="alert alert-success auto-alert">
         @TempData["Success"]
     </div>
 }
+
 @if (TempData["Error"] != null)
 {
-    <div class="alert alert-danger">
+    <div class="alert alert-danger auto-alert">
         @TempData["Error"]
     </div>
 }
 
+<div class="d-flex justify-content-between align-items-center mb-4">
 
-<div class="row mb-3">
+    <div>
 
-    <div class="col-md-4">
-        <div class="card text-center">
-            <div class="card-body">
-                <h5>Total Expenses</h5>
-                <h3>₹ @ViewBag.TotalExpense</h3>
-            </div>
-        </div>
+        <h2 class="mb-0">
+            <i class="bi bi-receipt me-2"></i>
+            Expenses
+        </h2>
+
+        <small class="text-muted">
+            Track clinic expenses and operating costs
+        </small>
+
     </div>
-
-    <div class="col-md-4">
-        <div class="card text-center">
-            <div class="card-body">
-                <h5>This Month</h5>
-                <h3>₹ @ViewBag.MonthExpense</h3>
-            </div>
-        </div>
-    </div>
-
-    <div class="col-md-4">
-        <div class="card text-center">
-            <div class="card-body">
-                <h5>Today</h5>
-                <h3>₹ @ViewBag.TodayExpense</h3>
-            </div>
-        </div>
-    </div>
-
-</div>
-
-<div class="d-flex justify-content-between mb-3">
-
-    <h2>Expenses</h2>
 
     <a asp-action="Create"
-           class="btn btn-success">
+       class="btn btn-success">
+
         Add Expense
+
     </a>
 
 </div>
 
-<table class="table table-bordered">
+<div class="row g-3 mb-4">
 
-    <thead>
-        <tr>
-            <th>Date</th>
-            <th>Category</th>
-            <th>Amount</th>
-            <th>Notes</th>
-            <th>Type</th>
-            <th>Action</th>
-        </tr>
-    </thead>
+    <div class="col-md-4">
 
-    <tbody>
+        <div class="card dashboard-card card-danger">
 
-        @foreach (var item in Model)
-        {
-            <tr>
+            <div class="card-body text-center">
 
-                <td>
-                    @item.ExpenseDate.ToString("dd-MMM-yyyy")
-                </td>
+                <i class="bi bi-cash-stack dashboard-icon text-danger"></i>
 
-                <td>
-                    @item.CategoryName
-                </td>
+                <h6>Total Expenses</h6>
 
-                <td>
-                    ₹ @item.Amount
-                </td>
+                <div class="dashboard-number">
 
-                <td>
-                    @item.Notes
-                </td>
-                <td>
-                    @(item.IsSystemGenerated
-                        ? "Auto"
-                        : "Manual")
-                </td>
+                    ₹ @ViewBag.TotalExpense
 
-                <td>
+                </div>
 
-                    <a asp-action="Edit"
-                           asp-route-id="@item.Id"
-                           class="btn btn-warning btn-sm">
-                        Edit
-                    </a>
+            </div>
 
-                    <form asp-action="Delete"
-                          method="post"
-                          style="display:inline;">
+        </div>
 
-                        <input type="hidden"
-                               name="id"
-                               value="@item.Id" />
+    </div>
 
-                        <button class="btn btn-danger btn-sm"
-                                onclick="return confirm('Delete this expense?')">
-                            Delete
-                        </button>
+    <div class="col-md-4">
 
-                    </form>
+        <div class="card dashboard-card card-warning">
 
-                </td>
+            <div class="card-body text-center">
 
-            </tr>
-        }
+                <i class="bi bi-calendar-month dashboard-icon text-warning"></i>
 
-    </tbody>
+                <h6>This Month</h6>
 
-</table>
+                <div class="dashboard-number">
+
+                    ₹ @ViewBag.MonthExpense
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <div class="col-md-4">
+
+        <div class="card dashboard-card card-primary">
+
+            <div class="card-body text-center">
+
+                <i class="bi bi-calendar-day dashboard-icon text-primary"></i>
+
+                <h6>Today</h6>
+
+                <div class="dashboard-number">
+
+                    ₹ @ViewBag.TodayExpense
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+
+        <div class="table-responsive">
+
+            <table class="table table-hover align-middle">
+
+                <thead class="table-light">
+
+                    <tr>
+
+                        <th>Date</th>
+
+                        <th>Category</th>
+
+                        <th>Amount</th>
+
+                        <th>Notes</th>
+
+                        <th>Type</th>
+
+                        <th width="180">Actions</th>
+
+                    </tr>
+
+                </thead>
+
+                <tbody>
+
+                    @if (Model != null)
+                    {
+                        @foreach (var item in Model)
+                        {
+                            <tr>
+
+                                <td>
+
+                                    @item.ExpenseDate.ToString("dd-MMM-yyyy")
+
+                                </td>
+
+                                <td>
+
+                                    <span class="badge bg-info text-dark">
+
+                                        @item.CategoryName
+
+                                    </span>
+
+                                </td>
+
+                                <td class="fw-bold text-danger">
+
+                                    ₹ @item.Amount
+
+                                </td>
+
+                                <td>
+
+                                    @(string.IsNullOrWhiteSpace(item.Notes)
+                                        ? "-"
+                                        : item.Notes)
+
+                                </td>
+
+                                <td>
+
+                                    @if (item.IsSystemGenerated)
+                                    {
+                                        <span class="badge bg-secondary">
+
+                                            Auto
+
+                                        </span>
+                                    }
+                                    else
+                                    {
+                                        <span class="badge bg-success">
+
+                                            Manual
+
+                                        </span>
+                                    }
+
+                                </td>
+
+                                <td>
+
+                                    @if (!item.IsSystemGenerated)
+                                    {
+                                        <a asp-action="Edit"
+                                           asp-route-id="@item.Id"
+                                           class="btn btn-warning btn-sm">
+
+                                            Edit
+
+                                        </a>
+
+                                        <form asp-action="Delete"
+                                              method="post"
+                                              style="display:inline;">
+
+                                            <input type="hidden"
+                                                   name="id"
+                                                   value="@item.Id" />
+
+                                            <button type="submit"
+                                                    class="btn btn-danger btn-sm"
+                                                    onclick="return confirm('Delete this expense?')">
+
+                                                Delete
+
+                                            </button>
+
+                                        </form>
+                                    }
+                                    else
+                                    {
+                                        <span class="text-muted">
+
+                                            Locked
+
+                                        </span>
+                                    }
+
+                                </td>
+
+                            </tr>
+                        }
+                    }
+                    else
+                    {
+                        <tr>
+
+                            <td colspan="6"
+                                class="text-center text-muted py-4">
+
+                                <i class="bi bi-inbox fs-4 d-block mb-2"></i>
+
+                                No expense records found.
+
+                            </td>
+
+                        </tr>
+                    }
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+ 
+
+@section Scripts
+{
+    <script>
+        setTimeout(function () {
+            $(".auto-alert").fadeOut("slow");
+        }, 3000);
+    </script>
+}

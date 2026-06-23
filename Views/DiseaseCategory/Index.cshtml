@@ -6,74 +6,160 @@
 
 @if (TempData["Success"] != null)
 {
-    <div class="alert alert-success">
+    <div class="alert alert-success auto-alert">
         @TempData["Success"]
     </div>
 }
+
 @if (TempData["Error"] != null)
 {
-    <div class="alert alert-danger">
+    <div class="alert alert-danger auto-alert">
         @TempData["Error"]
     </div>
 }
 
-<div class="d-flex justify-content-between mb-3">
+<div class="d-flex justify-content-between align-items-center mb-4">
 
-    <h2>Disease Categories</h2>
+    <div>
+
+        <h2 class="mb-0">
+            <i class="bi bi-heart-pulse me-2"></i>
+            Disease Categories
+        </h2>
+
+        <small class="text-muted">
+            Manage disease categories used during patient visits
+        </small>
+
+    </div>
 
     <a asp-action="Create"
-           class="btn btn-success">
+       class="btn btn-success">
+
+        <i class="bi bi-plus-circle me-1"></i>
+
         Add Category
+
     </a>
 
 </div>
 
-<table class="table table-bordered">
+    <hr />
 
-    <thead>
-        <tr>
-            <th>ID</th>
-            <th>Disease Name</th>
-            <th>Actions</th>
-        </tr>
-    </thead>
+    
 
-    <tbody>
+    <div class="card-body">
 
-        @foreach (var item in Model)
-        {
-            <tr>
-                <td>@item.Id</td>
+        <div class="table-responsive">
 
-                <td>@item.Name</td>
+            <table class="table table-hover align-middle">
 
-                <td>
+                <thead class="table-light">
 
-                    <a asp-action="Edit"
-                           asp-route-id="@item.Id"
-                           class="btn btn-warning btn-sm">
-                        Edit
-                    </a>
+                    <tr>
 
-                    <form asp-action="Delete"
-                          method="post"
-                          style="display:inline;">
+                        <th width="100">
+                            ID
+                        </th>
 
-                        <input type="hidden"
-                               name="id"
-                               value="@item.Id" />
+                        <th>
+                            Disease Name
+                        </th>
 
-                        <button class="btn btn-danger btn-sm"
-                                onclick="return confirm('Delete this disease category?')">
-                            Delete
-                        </button>
+                        <th width="180">
+                            Actions
+                        </th>
 
-                    </form>
+                    </tr>
 
-                </td>
-            </tr>
-        }
+                </thead>
 
-    </tbody>
+                <tbody>
 
-</table>
+                    @if (Model.Any())
+                    {
+                        @foreach (var item in Model)
+                        {
+                            <tr>
+
+                                <td>
+
+                                    <span class="badge bg-primary">
+
+                                        @item.Id
+
+                                    </span>
+
+                                </td>
+
+                                <td>
+
+                                    @item.Name
+
+                                </td>
+
+                                <td>
+
+                                    <a asp-action="Edit"
+                                       asp-route-id="@item.Id"
+                                       class="btn btn-warning btn-sm">
+
+                                    Edit
+
+                                    </a>
+
+                                    <form asp-action="Delete"
+                                          method="post"
+                                          style="display:inline;">
+
+                                        <input type="hidden"
+                                               name="id"
+                                               value="@item.Id" />
+
+                                        <button type="submit"
+                                                class="btn btn-danger btn-sm"
+                                                onclick="return confirm('Delete this disease category?')">
+
+                                        Delete
+
+                                        </button>
+
+                                    </form>
+
+                                </td>
+
+                            </tr>
+                        }
+                    }
+                    else
+                    {
+                        <tr>
+
+                            <td colspan="3"
+                                class="text-center text-muted py-4">
+
+                                <i class="bi bi-inbox fs-4 d-block mb-2"></i>
+
+                                No disease categories found.
+
+                            </td>
+
+                        </tr>
+                    }
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+    </div>
+
+@section Scripts
+{
+    <script>
+        setTimeout(function () {
+            $(".auto-alert").fadeOut("slow");
+        }, 3000);
+    </script>
+}

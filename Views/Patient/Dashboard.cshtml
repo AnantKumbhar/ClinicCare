@@ -2,42 +2,56 @@
     Layout = "_PatientLayout";
 }
 
-<h2>
-
-    Welcome,
-
-    @ViewBag.PatientName
-
-</h2>
 @if (TempData["Success"] != null)
 {
-    <div class="alert alert-success">
+    <div class="alert alert-success auto-alert">
         @TempData["Success"]
     </div>
 }
+
 @if (TempData["Error"] != null)
 {
-    <div class="alert alert-danger">
+    <div class="alert alert-danger auto-alert">
         @TempData["Error"]
     </div>
 }
-<hr />
 
-<div class="row">
+<div class="mb-4">
+
+    <h2 class="mb-1">
+
+        Welcome,
+        @ViewBag.PatientName 👋
+
+    </h2>
+
+    <p class="text-muted mb-0">
+
+        Manage appointments and view your clinic visit history.
+
+    </p>
+
+</div>
+
+<div class="row g-3 mb-4">
 
     <div class="col-md-6">
 
-        <div class="card">
+        <div class="card border-opacity-50  shadow-sm">
 
             <div class="card-body text-center">
 
-                <h5>Total Visits</h5>
+                
 
-                <h2>
+                <h6 class="mt-2">
+                    Total Visits
+                </h6>
+
+                <h5 class="fw-bold">
 
                     @ViewBag.TotalVisits
 
-                </h2>
+                </h5>
 
             </div>
 
@@ -47,151 +61,218 @@
 
     <div class="col-md-6">
 
-        <div class="card">
+        <div class="card border-opacity-50 shadow-sm">
 
             <div class="card-body text-center">
 
-                <h5>Last Visit</h5>
+               
 
-                <h2>
+                <h6 class="mt-2">
+                    Last Visit
+                </h6>
+
+                <h5 class="fw-bold">
 
                     @(ViewBag.LastVisit == DateTime.MinValue
-                        ? "No Visits"
+                        ? "No Visits Yet"
                         : ((DateTime)ViewBag.LastVisit)
                             .ToString("dd-MMM-yyyy"))
 
-                </h2>
+                </h5>
 
             </div>
 
         </div>
 
     </div>
-    <h4 class="mt-4">
-        Book Appointment
-    </h4>
 
-    <form asp-action="BookAppointment"
-          method="post">
+</div>
 
-        <div class="row">
 
-            <div class="col-md-4">
 
-                <label>Date</label>
+    <div class="card-header bg-white">
 
-                <input type="date"
-                       name="AppointmentDate"
-                       class="form-control" />
+        <h5 class="mb-0">
+
+            <i class="bi bi-calendar-plus me-2"></i>
+
+            Book Appointment
+
+        </h5>
+
+    </div>
+
+    <hr />
+
+        <form asp-action="BookAppointment"
+              method="post">
+
+            <div class="row g-3 align-items-end">
+
+                <div class="col-md-4">
+
+                    <label class="form-label">
+
+                        Appointment Date
+
+                    </label>
+
+                    <input type="date"
+                           name="AppointmentDate"
+                           class="form-control" />
+
+                </div>
+
+                <div class="col-md-4">
+
+                    <label class="form-label">
+
+                        Time Slot
+
+                    </label>
+
+                    <select name="TimeSlot"
+                            class="form-select">
+
+                        <option value="">
+                            Select Slot
+                        </option>
+
+                        @foreach (var slot in ViewBag.Slots)
+                        {
+                            <option value="@slot.Value">
+
+                                @slot.Text
+
+                            </option>
+                        }
+
+                    </select>
+
+                </div>
+
+                <div class="col-md-4">
+
+                    <button type="submit"
+                            class="btn btn-success w-100">
+
+
+                        Book Appointment
+
+                    </button>
+
+                </div>
 
             </div>
 
-            <div class="col-md-4">
+        </form>
 
-                <label>Slot</label>
+   
+        <p />
 
-                <select name="TimeSlot"
-                        class="form-control">
 
-                    <option value="">
-                        Select Slot
-                    </option>
+    <div class="card-header bg-white">
 
-                    @foreach (var slot in ViewBag.Slots)
+        <h5 class="mb-0">
+
+            <i class="bi bi-clock-history me-2"></i>
+
+            My Recent Appointments
+
+        </h5>
+
+    </div>
+    <hr />
+
+        <div class="table-responsive">
+
+            <table class="table table-hover align-middle">
+
+                <thead class="table-light">
+
+                    <tr>
+
+                        <th>Date</th>
+
+                        <th>Time Slot</th>
+
+                        <th>Status</th>
+
+                    </tr>
+
+                </thead>
+
+                <tbody>
+
+                    @foreach (var item in ViewBag.RecentAppointments)
                     {
-                        <option value="@slot.Value">
-                            @slot.Text
-                        </option>
+                        <tr>
+
+                            <td>
+                                @item.AppointmentDate.ToString("dd-MMM-yyyy")
+                            </td>
+
+                            <td>
+                                @item.TimeSlot
+                            </td>
+
+                            <td>
+
+                                @if (item.Status == "Pending")
+                                {
+                                    <span class="badge bg-warning text-dark">
+
+                                        Pending
+
+                                    </span>
+                                }
+                                else if (item.Status == "Approved")
+                                {
+                                    <span class="badge bg-primary">
+
+                                        Approved
+
+                                    </span>
+                                }
+                                else if (item.Status == "Completed")
+                                {
+                                    <span class="badge bg-success">
+
+                                        Completed
+
+                                    </span>
+                                }
+                                else
+                                {
+                                    <span class="badge bg-danger">
+
+                                        Declined
+
+                                    </span>
+                                }
+
+                            </td>
+
+                        </tr>
                     }
 
-                </select>
+                </tbody>
 
-            </div>
-
-            <div class="col-md-4">
-
-                <br />
-
-                <button type="submit"
-                        class="btn btn-success">
-
-                    Book Appointment
-
-                </button>
-
-            </div>
+            </table>
 
         </div>
 
-    </form>
-    <h4 class="mt-4">
-        My Recent Appointments
-    </h4>
+    
 
-    <table class="table table-bordered">
+@section Scripts
+{
+    <script>
 
-        <thead>
+        setTimeout(function () {
 
-            <tr>
+            $(".auto-alert").fadeOut("slow");
 
-                <th>Date</th>
+        }, 3000);
 
-                <th>Slot</th>
-
-                <th>Status</th>
-
-            </tr>
-
-        </thead>
-
-        <tbody>
-
-            @foreach (var item in ViewBag.RecentAppointments)
-            {
-                <tr>
-
-                    <td>
-                        @item.AppointmentDate.ToString("dd-MMM-yyyy")
-                    </td>
-
-                    <td>
-                        @item.TimeSlot
-                    </td>
-
-                    <td>
-
-                        @if (item.Status == "Pending")
-                        {
-                            <span class="badge bg-warning">
-                                Pending
-                            </span>
-                        }
-                        else if (item.Status == "Approved")
-                        {
-                            <span class="badge bg-primary">
-                                Approved
-                            </span>
-                        }
-                        else if (item.Status == "Completed")
-                        {
-                            <span class="badge bg-success">
-                                Completed
-                            </span>
-                        }
-                        else
-                        {
-                            <span class="badge bg-danger">
-                                Declined
-                            </span>
-                        }
-
-                    </td>
-
-                </tr>
-            }
-
-        </tbody>
-
-    </table>
-
-</div>
+    </script>
+}

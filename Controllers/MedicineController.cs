@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace ClinicCare.Controllers
 {
-    [Authorize(Roles = "Admin")]
+    
     public class MedicineController : Controller
     {
         private readonly ApplicationDbContext _context;
